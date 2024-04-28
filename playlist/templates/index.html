@@ -57,7 +57,7 @@
             createPlaylistForm.style.display = 'block';
         }
 
-        var playlistData = {{ akun|safe }};
+        var playlistData = {{ playlists|safe }};
         console.log(playlistData)
         var playlistDiv = document.getElementById("playlists")
         if (playlistData.length === 0) {
@@ -81,7 +81,7 @@
                                                     <td>${playlist.jumlah_lagu}</td>
                                                     <td>${playlist.total_durasi} menit</td>
                                                     <td>
-                                                        <button>Detail</button>
+                                                        <a href="/playlist/show-one-by-id/${playlist.id_user_playlist}">Detail</a>
                                                         <button>Ubah</button>
                                                         <button>Hapus</button>
                                                     </td>
