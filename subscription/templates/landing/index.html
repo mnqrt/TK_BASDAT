@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Paket</title>
+</head>
+<body>
+    <h1>Daftar Paket</h1>
+    <table>
+        <tr>
+            <th>Durasi</th>
+            <th>Harga</th>
+            <th></th>
+        </tr>
+        {% for konten in konten %}
+            <tr>
+                <td>{{ konten.jenis }}</td>
+                <td>Rp{{ konten.harga }},00</td>
+                <td><button onclick="openPayment('{{ konten.jenis }}')">Beli</button></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        function openPayment(jenis) {
+            const url = `{% url 'subscription:payment_page' 0 %}`.replace('0', jenis);
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
