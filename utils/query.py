@@ -3,8 +3,6 @@ import psycopg2
 from psycopg2 import Error
 from psycopg2.extras import RealDictCursor
 
-
-
 try:
     connection = psycopg2.connect(user="postgres.bifgoiocecmaulszyldt",
                         password="ZtQSa7t2(7Va.@e",
@@ -12,7 +10,6 @@ try:
                         port="5432",
                         database="postgres")
 
-    # Create a cursor to perform database operations
     connection.autocommit = True
     cursor = connection.cursor()
 except (Exception, Error) as error:
@@ -20,7 +17,6 @@ except (Exception, Error) as error:
 
 
 def map_cursor(cursor):
-    "Return all rows from a cursor as a namedtuple"
     desc = cursor.description
     nt_result = namedtuple("Result", [col[0] for col in desc])
     return [dict(row) for row in cursor.fetchall()]
@@ -32,16 +28,12 @@ def query(query_str: str):
         cursor.execute("SET SEARCH_PATH TO TK_BASDAT")
         try:
             cursor.execute(query_str)
-
             if query_str.strip().upper().startswith("SELECT"):
-                # Kalau ga error, return hasil SELECT
                 hasil = map_cursor(cursor)
             else:
-                # Kalau ga error, return jumlah row yang termodifikasi oleh INSERT, UPDATE, DELETE
                 hasil = cursor.rowcount
                 connection.commit()
         except Exception as e:
-            # Ga tau error apa
             hasil = e
 
     return hasil
