@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Downloaded Song</title>
+</head>
+<body>
+    <h1>Daftar Lagu</h1>
+    <table>
+        <tr>
+            <th>Lagu</th>
+            <th>Oleh</th>
+            <th>Action</th>
+        </tr>
+        {% for konten in konten %}
+            <tr>
+                <td>{{ konten.judul }}</td>
+                <td>{{ konten.nama }}</td>
+                <td>
+                    <button onclick="">Lihat</button>
+                    <button onclick="del()">Hapus</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        function del() {
+            alert("Lagu berhasil dihapus");
+        }
+    </script>
+</body>
+</html>
