@@ -6,24 +6,28 @@
     <title>Daftar Downloaded Song</title>
 </head>
 <body>
-    <h1>Daftar Lagu</h1>
-    <table>
-        <tr>
-            <th>Lagu</th>
-            <th>Oleh</th>
-            <th>Action</th>
-        </tr>
-        {% for konten in konten %}
+    {% include 'main/navbar.html' with context=context only  %}
+    <div class="content">
+        <h1>Daftar Lagu</h1>
+        <table>
             <tr>
-                <td>{{ konten.judul }}</td>
-                <td>{{ konten.nama }}</td>
-                <td>
-                    <button onclick="">Lihat</button>
-                    <button onclick="del()">Hapus</button>
-                </td>
+                <th>Lagu</th>
+                <th>Oleh</th>
+                <th>Action</th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for konten in konten %}
+                <tr>
+                    <td>{{ konten.judul }}</td>
+                    <td>{{ konten.nama }}</td>
+                    <td>
+                        <button onclick="">Lihat</button>
+                        <button onclick="del()">Hapus</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+   
 
     <script>
         function del() {
