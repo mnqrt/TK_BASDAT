@@ -109,6 +109,7 @@ def authenticate_user(request):
                 return HttpResponse("Authentication failed", status=400)
             
         request.session["is_active"] = True
+        request.session["email"] = email
         return HttpResponse("OK", status=200)
             
   
