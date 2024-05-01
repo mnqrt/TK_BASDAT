@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RPlayPodcast</title>
+<style>
+  h1 {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  #podcast-info {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+
+  #podcast-info p {
+    margin: 5px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+  <h1>Podcast Detail</h1>
+  <div id="podcast-info">
+    <p>Judul: <span id="podcast-title"></span></p>
+    <p>Genre(s):</p>
+    <ul id="podcast-genre"></ul>
+    <p>Podcaster: <span id="podcast-podcaster"></span></p>
+    <p>Total Durasi: <span id="podcast-duration"></span></p>
+    <p>Tanggal Rilis: <span id="podcast-release-date"></span></p>
+    <p>Tahun: <span id="podcast-year"></span></p>
+  </div>
+  <div style="text-align: center;">
+    <button onclick="goBack()">Kembali</button>
+  </div>
+  <h2>DAFTAR EPISODE</h2>
+  <table id="episode-list">
+    <thead>
+      <tr>
+        <th>Judul</th>
+        <th>Episode</th>
+        <th>Deskripsi</th>
+        <th>Durasi</th>
+        <th>Tanggal</th>
+      </tr>
+    </thead>
+    <tbody id="episode-table-body"></tbody>
+  </table>
+
+  <script>
+    // Mock data for demonstration
+    const podcastData = {
+      title: "Podcast1",
+      genres: ["genre1", "genre2"],
+      podcaster: "Artist1",
+      duration: { hours: 8, minutes: 20 },
+      releaseDate: "18/03/24",
+      year: 2024,
+    };
+
+    const episodeList = [
+      { title: "SubJudul 1", episode: 1, description: "LoremIpsum….", duration: 59, date: "18/03/2024" },
+      { title: "SubJudul 2", episode: 2, description: "LoremIpsum….", duration: 62, date: "25/03/2024" },
+      // Add more episodes as needed
+    ];
+
+    // Function to populate podcast detail
+    function populatePodcastDetail() {
+      document.getElementById("podcast-title").textContent = podcastData.title;
+      populateGenres(podcastData.genres);
+      document.getElementById("podcast-podcaster").textContent = podcastData.podcaster;
+      const { hours, minutes } = podcastData.duration;
+      document.getElementById("podcast-duration").textContent = `${hours} jam ${minutes} menit`;
+      document.getElementById("podcast-release-date").textContent = podcastData.releaseDate;
+      document.getElementById("podcast-year").textContent = podcastData.year;
+    }
+
+    // Function to populate genres as a list
+    function populateGenres(genres) {
+      const genreList = document.getElementById("podcast-genre");
+      genres.forEach(genre => {
+        const li = document.createElement("li");
+        li.textContent = genre;
+        genreList.appendChild(li);
+      });
+    }
+
+    // Function to populate episode list
+    function populateEpisodeList() {
+      const episodeTableBody = document.getElementById("episode-table-body");
+      episodeList.forEach((episode) => {
+        const row = episodeTableBody.insertRow();
+        row.insertCell().textContent = episode.title;
+        row.insertCell().textContent = episode.episode;
+        row.insertCell().textContent = episode.description;
+        const { hours, minutes } = convertToHoursMinutes(episode.duration);
+        row.insertCell().textContent = `${hours} jam ${minutes} menit`;
+        row.insertCell().textContent = episode.date;
+      });
+    }
+
+    // Function to convert total minutes to hours and minutes
+    function convertToHoursMinutes(totalMinutes) {
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+      return { hours, minutes };
+    }
+
+    // Go back function (for the button)
+    function goBack() {
+      window.history.back();
+    }
+
+    // Populate data when the page loads
+    window.onload = function () {
+      populatePodcastDetail();
+      populateEpisodeList();
+    };
+  </script>
+</body>
+</html>
