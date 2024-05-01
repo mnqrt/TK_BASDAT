@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RUMELIHATCHART - Chart Detail</title>
+<style>
+  h2 {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  #chart-detail table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  #chart-detail th, #chart-detail td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+
+  #chart-actions {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+  <div id="chart-detail">
+    <h2>CHART DETAIL</h2>
+    <p>Tipe: <span id="chart-type"></span></p>
+    <button onclick="goBack()">Kembali</button>
+    <h3>SONG LIST</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Song Title</th>
+          <th>By</th>
+          <th>Release Date</th>
+          <th>Total Plays</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="song-table-body">
+        <tr>
+          <td>Song1</td>
+          <td>Artist1</td>
+          <td>09/03/2024</td>
+          <td>21000</td>
+          <td><button onclick="viewSongDetail('Song1')">Lihat</button></td>
+        </tr>
+        <tr>
+          <td>Song2</td>
+          <td>Artist2</td>
+          <td>02/03/2024</td>
+          <td>19000</td>
+          <td><button onclick="viewSongDetail('Song2')">Lihat</button></td>
+        </tr>
+        <!-- Add more songs as needed -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const chartType = urlParams.get('type');
+      document.getElementById("chart-type").textContent = chartType;
+    });
+
+    function viewSongDetail(songTitle) {
+      alert(`View song detail for ${songTitle}`);
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+</body>
+</html>
