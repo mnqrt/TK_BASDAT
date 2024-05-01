@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUDKELOLAPODCAST - List Podcast</title>
+<style>
+  h2 {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .action-buttons button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <h2>LIST PODCAST</h2>
+
+  <!-- LIST PODCAST TABLE -->
+  <table id="podcast-table">
+    <thead>
+      <tr>
+        <th>Judul</th>
+        <th>Jumlah Episode</th>
+        <th>Total Durasi</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Podcast1</td>
+        <td>2</td>
+        <td>4 menit</td>
+        <td class="action-buttons">
+          <button onclick="viewEpisodes('Podcast1')">Lihat Daftar Episode</button>
+          <button onclick="createEpisode('Podcast1')">Tambah Episode</button>
+          <button onclick="deletePodcast('Podcast1')">Hapus</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Podcast2</td>
+        <td>3</td>
+        <td>7 menit</td>
+        <td class="action-buttons">
+          <button onclick="viewEpisodes('Podcast2')">Lihat Daftar Episode</button>
+          <button onclick="createEpisode('Podcast2')">Tambah Episode</button>
+          <button onclick="deletePodcast('Podcast2')">Hapus</button>
+        </td>
+      </tr>
+      <!-- Add more podcasts as needed -->
+    </tbody>
+  </table>
+
+  <script>
+    // Function to view episodes of a podcast
+    function viewEpisodes(podcastTitle) {
+      window.location.href = `daftar_episode.html?title=${podcastTitle}`;
+    }
+
+    // Function to create an episode for a podcast
+    function createEpisode(podcastTitle) {
+      window.location.href = `create_episode.html?title=${podcastTitle}`;
+    }
+
+    // Function to delete a podcast
+    function deletePodcast(podcastTitle) {
+      if (confirm(`Apakah Anda yakin ingin menghapus podcast "${podcastTitle}"?`)) {
+        // Code to delete the podcast
+        alert(`Podcast "${podcastTitle}" berhasil dihapus.`);
+        // Assuming the podcastList array is updated, you can remove the row from the table
+        // const row = document.getElementById(podcastTitle);
+        // row.parentNode.removeChild(row);
+      }
+    }
+  </script>
+</body>
+</html>
