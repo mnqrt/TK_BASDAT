@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Pencarian</title>
+</head>
+<body>
+    {% include 'main/navbar.html' with context=context only  %}
+    <div class="content">
+        <h1>Hasil Pencarian {{ keyword }}</h1>
+        {% if konten %}
+        <table>
+            <tr>
+                <th>Tipe</th>
+                <th>Judul</th>
+                <th>Oleh</th>
+                <th>Action</th>
+            </tr>
+            {% for konten in konten %}
+                <tr>
+                    <td>{{ konten.tipe }}</td>
+                    <td>{{ konten.judul }}</td>
+                    <td>{{ konten.nama }}</td>
+                    <td>
+                        <button onclick="">Lihat</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h2>Pencarian tidak ditemukan</h2>
+        {% endif %}
+    </div>
+   
+
+    <script>
+        function del() {
+            alert("Lagu berhasil dihapus");
+        }
+    </script>
+</body>
+</html>

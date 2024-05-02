@@ -6,5 +6,6 @@ urlpatterns = [
     path('',show_homepage, name="show_homepage"),
     path('login/', login_page, name='login'),
     path('login/authenticate', authenticate_user, name='authenticate'), 
-    path('logout/', logout, name='logout'),  
+    path('logout/', logout, name='logout'),
+    path('search/', search, name='search'),  
 ]
