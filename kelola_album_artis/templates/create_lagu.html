@@ -7,25 +7,36 @@
 </head>
 <body>
 
-
-
 <h2>CREATE LAGU</h2>
 <form>
   <label for="album">Album:</label>
   <input type="text" id="album" name="album" value="Album1" readonly><br><br>
   <label for="judul">Judul:</label>
-  <input type="text" id="judul" name="judul" value="[Isian]"><br><br>
+  <input type="text" id="judul" name="judul" value="..."><br><br>
   <label for="artist">Artist:</label>
-  <input type="text" id="artist" name="artist" value="[Jika USER LOGGED IN == Artist, maka lagu dinyanyikan oleh Artist ini. Jika USER LOGGED IN ==
-Songwriter, tampilkan dropdown daftar artist pada Marmut]" readonly><br><br>
+  <select id="artist" name="artist">
+    <option value="artist1">Artist 1</option>
+    <option value="artist2">Artist 2</option>
+    <option value="artist3">Artist 3</option>
+  </select><br><br>
   <label for="songwriter">Songwriter:</label>
-  <input type="text" id="songwriter" name="songwriter" value="[Multiselect daftar songwriter pada Marmut. Jika USER LOGGED IN == Songwriter, maka
-lagu termasuk ditulis oleh Songwriter ini]" readonly><br><br>
+  <select id="songwriter" name="songwriter" multiple>
+    <option value="songwriter1">Songwriter 1</option>
+    <option value="songwriter2">Songwriter 2</option>
+    <option value="songwriter3">Songwriter 3</option>
+    <option value="songwriter4">Songwriter 4</option>
+  </select><br><br>
   <label for="genre">Genre:</label>
-  <input type="text" id="genre" name="genre" value="[Multiselect daftar genre pada Marmut]"><br><br>
+  <select id="genre" name="genre" multiple>
+    <option value="genre1">Genre 1</option>
+    <option value="genre2">Genre 2</option>
+    <option value="genre3">Genre 3</option>
+    <option value="genre4">Genre 4</option>
+  </select><br><br>
   <label for="durasi">Durasi:</label>
-  <input type="text" id="durasi" name="durasi" value="[Isian]"><br><br>
+  <input type="text" id="durasi" name="durasi" value="..."><br><br>
   <input type="submit" value="[SUBMIT]">
 </form>
 
 </body>
+</html>
