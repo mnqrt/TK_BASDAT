@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Play Song</title>
+</head>
+    <body>
+        <div class="song-details">
+            <h1>Judul: Song1</h1>
+            <p>Genre: Genre1, Genre2</p>
+            <p>Artist: Artist1</p>
+            <p>Songwriter: Songwriter1, Songwriter2</p>
+            <p>Duration: 3 minutes</p>
+            <p>Release Date: 18/03/2024</p>
+            <p>Year: 2024</p>
+            <p>Total Plays: 0</p>
+            <p>Total Downloads: 0</p>
+            <p>Album: Album1</p>
+        </div>
+        <div class="controls">
+            <input type="range" id="song-progress" min="0" max="100" value="0">
+            <button onclick="playSong()">Play</button>
+            <button onclick="addToPlaylist()">Add to Playlist</button>
+            <button onclick="downloadSong()">Download</button>
+            <button onclick="goBack()">Back</button>
+        </div>
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .song-details {
+                margin-bottom: 20px;
+            }
+            .controls {
+                margin-top: 20px;
+            }
+            button {
+                margin-right: 10px;
+            }
+        </style>
+
+        <script>
+            function playSong() {
+                let progress = document.getElementById('song-progress').value;
+                if (progress > 70) {
+                    console.log("Adding play song entry with current timestamp.");
+                } else {
+                    console.log("Playing song...");
+                }
+            }
+
+            function addToPlaylist() {
+                console.log("Adding song to playlist...");
+            }
+
+            function downloadSong() {
+                console.log("Downloading song...");
+            }
+
+            function goBack() {
+                console.log("Going back to previous page...");
+            }
+        </script>
+    </body>
+</html>
