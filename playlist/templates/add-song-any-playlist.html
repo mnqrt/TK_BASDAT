@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Song to Playlist</title>
+</head>
+<body>
+    <div id="playlist"></div>
+    <div id="hidden-add-song" style="display: block;"></div>
+
+    <script>
+        const titleData = `${{ judul|safe }}`.slice(1)
+        const artistData = `${{ artis|safe }}`.slice(1)
+        const playlistsData = {{ playlists|safe }}
+        const idSongData = `${{ id_song|safe }}`.slice(1)
+        const emailData = `${{ email|safe }}`.slice(1)
+        console.log(playlistsData)
+        const mainDiv = document.getElementById("playlist")
+        mainDiv.innerHTML = `
+            <h3>Add Song to User Playlist</h3>
+            <p>Title: ${titleData}</p>
+            <p>Artist: ${artistData}</p>
+            <select id="playlist-select"></select>
+            <button onclick="addToPlaylist()">Add</button>
+            <button onclick="window.location='index.html'">Back</button>
+        `   
+
+        const selectPlaylistDropdown = document.getElementById('playlist-select')
+        const addSongResponseDiv = document.getElementById('hidden-add-song')
+        var selectPlaylistDropdownHTML = ""
+        for (const playlist of playlistsData) {
+            selectPlaylistDropdownHTML += `<option value="${playlist.id_user_playlist}">${playlist.judul}</option>`
+        }
+        selectPlaylistDropdown.innerHTML = selectPlaylistDropdownHTML
+
+        async function addToPlaylist() {
+            const selectPlaylistDropdown = document.getElementById('playlist-select')
+            console.log(selectPlaylistDropdown.value)
+            // console.log(idSongData)
+            const res = await fetch(`http://127.0.0.1:8000/playlist/add-song/${selectPlaylistDropdown.value}/${idSongData}`)
+            console.log(res)
+
+            addSongResponseDiv.innerHTML = `<div>Berhasil menambahkan Lagu dengan judul ‘${titleData}’ ke ‘${selectPlaylistDropdown.value}’!</div>
+                <a href="http://127.0.0.1:8000/playlist/show-one-by-id/${selectPlaylistDropdown.value}">[KE PLAYLIST]</a>
+                <a href="http://127.0.0.1:8000/playlist/play-song-page/${emailData}/${idSongData}">[KEMBALI]</a>
+            `
+        }
+        
+    </script>
+</body>
+</html>

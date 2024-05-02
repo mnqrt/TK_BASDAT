@@ -96,6 +96,16 @@ def play_song_page(request, email, id_song):
     res = query(query_str)
     nama_artis = res[0]['nama_artis'] if len(res) > 0 else None
 
+    query_str = f"""SELECT a.nama AS nama_songwriter
+                    FROM SONG s
+                    JOIN SONGWRITER_WRITE_SONG sws ON s.id_konten=sws.id_song
+                    JOIN SONGWRITER sw ON sws.id_songwriter=sw.id
+                    JOIN AKUN a ON a.email=sw.email_akun
+                    WHERE s.id_konten='{id_song}'"""
+    res = query(query_str)
+    nama_songwriter = ", ".join([obj_songwriter['nama_songwriter'] for  obj_songwriter in res])
+
+
     query_str = f"""SELECT k.durasi AS durasi
                     FROM SONG s 
                     JOIN KONTEN k ON k.id=s.id_konten 
@@ -135,22 +145,56 @@ def play_song_page(request, email, id_song):
                     WHERE s.id_konten='{id_song}'"""
     album = query(query_str)[0]['album']
 
-    print(":->",judul, genre, nama_artis, durasi, tanggal_rilis, tahun, total_play, total_download,album)
-    return render(request, 'play-song.html', {'judul':judul,'genre':genre,'nama_artis':nama_artis,'durasi':durasi,
-                                            'tanggal_rilis':tanggal_rilis,'tahun':tahun,'total_play':total_play,'total_download':total_download,'album':album})
-    # return HTTPResponse("Song added to playlist successfully!")
+    return render(request, 'play-song.html', {'judul':judul,'genre':genre,'nama_artis':nama_artis,'nama_songwriter':nama_songwriter,
+                                            'durasi':durasi,'tanggal_rilis':tanggal_rilis,'tahun':tahun,
+                                            'total_play':total_play,'total_download':total_download,'album':album,
+                                            'email':email, 'id_song':id_song})
 
-'''
-Judul: SONG -> KONTEN
-Genre: SONG -> KONTEN -> GENRE
-Artis: SONG -> ARTIS -> AKUN
-durasi: SONG -> KONTEN
-rilis: SONG -> KONTEN
-year: SONG -> KONTEN
-total play: SONG -> AKUN_PLAY_SONG
-total download: SONG -> DOWNLOADED_SONG
-album: SONG -> ALBUM
-'''
+def play_song(request, email, id_song):
+    try:
+        query_str = f"INSERT INTO TABLE (email_pemain, id_song) VALUES ('{email}', '{id_song}')"
+        res = query(query_str)
+        return HTTPResponse("Song added to playlist successfully!")
+    except:
+        return render(request, 'failed.html')
+
+def add_song_to_any_playlist_page(request, email, id_song):
+    query_str = f"""SELECT k.judul AS judul, a.nama AS nama_artis 
+                    FROM SONG s 
+                    JOIN KONTEN k ON k.id=s.id_konten 
+                    JOIN ARTIS ar ON ar.id=s.id_artist
+                    JOIN AKUN a ON a.email=ar.email_akun
+                    WHERE s.id_konten='{id_song}'"""
+    judul_artis = query(query_str)[0]
+    judul, artis = judul_artis['judul'], judul_artis['nama_artis']
+
+    query_str = f"""SELECT * FROM USER_PLAYLIST up WHERE up.email_pembuat='{email}' AND
+                    '{id_song}' NOT IN (
+                        SELECT ps.id_song
+                        FROM PLAYLIST_SONG ps 
+                        WHERE ps.id_playlist=up.id_playlist
+                    )"""
+    user_playlists = query(query_str)
+    print("--->",user_playlists)
+    for user_playlist in user_playlists:
+        user_playlist['tanggal_dibuat'] = user_playlist['tanggal_dibuat'].strftime('%Y-%m-%d')
+
+    return render(request, 'add-song-any-playlist.html', {'judul': judul, 'artis': artis, 'playlists': user_playlists, 'id_song': id_song, 'email': email})
+
+def download_song_page(request, email, id_song):
+    query_str = f"""SELECT k.judul AS judul 
+                    FROM SONG s 
+                    JOIN KONTEN k ON k.id=s.id_konten 
+                    WHERE s.id_konten='{id_song}'"""
+    judul = query(query_str)[0]['judul']
+
+    query_str = f"INSERT INTO DOWNLOADED_SONG(id_song, email_downloader) VALUES ('{id_song}', '{email}')"
+    res = query(query_str)
+
+    print(res)
+    return render(request, "down-song.html", {'email':email, 'id_song':id_song, 'judul': judul})
+
+
 
 # Create your views here.
 def show_song(request):

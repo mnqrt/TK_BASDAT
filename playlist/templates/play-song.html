@@ -6,7 +6,7 @@
 <title>Play Song</title>
 </head>
     <body>
-        <div class="song-details">
+        <div class="song-details" id="song-details">
             <h1>Judul: Song1</h1>
             <p>Genre: Genre1, Genre2</p>
             <p>Artist: Artist1</p>
@@ -21,10 +21,12 @@
         <div class="controls">
             <input type="range" id="song-progress" min="0" max="100" value="0">
             <button onclick="playSong()">Play</button>
-            <button onclick="addToPlaylist()">Add to Playlist</button>
-            <button onclick="downloadSong()">Download</button>
+            <button id="add-to-playlist">Add to Playlist</button>
+            <button id="down-song">Download</button>
             <button onclick="goBack()">Back</button>
         </div>
+
+        <div id="play-song-result"></div>
 
         <style>
             body {
@@ -42,18 +44,36 @@
         </style>
 
         <script>
-            function playSong() {
+            const idSongData = `${{ id_song|safe }}`.slice(1)
+            const emailData = `${{ email|safe }}`.slice(1)
+            const judulData = `${{ judul|safe }}`.slice(1);
+            const genreData = `${{ genre|safe }}`.slice(1);
+            const namaArtisData = `${{ nama_artis|safe }}`.slice(1);
+            const namaSongwriterData = `${{ nama_songwriter|safe }}`.slice(1);
+            const durasiData = `${{ durasi|safe }}`.slice(1);
+            const tanggalRilisData = `${{ tanggal_rilis|safe }}`.slice(1);
+            const tahunData = `${{ tahun|safe }}`.slice(1);
+            const totalPlayData = `${{ total_play|safe }}`.slice(1);
+            const totalDownloadData = `${{ total_download|safe }}`.slice(1);
+            const albumData = `${{ album|safe }}`.slice(1);
+
+            async function playSong() {
                 let progress = document.getElementById('song-progress').value;
+                const playSongResultDiv = document.getElementById("play-song-result")
                 if (progress > 70) {
-                    console.log("Adding play song entry with current timestamp.");
-                } else {
-                    console.log("Playing song...");
+                    const res = await fetch(`http://127.0.0.1:8000/playlist/play-song/${emailData}/${idSongData}`)
+                    if (res.status == 200) playSongResultDiv.innerHTML = "Song has been played"
+                    else                   playSongResultDiv.innerHTML = "An error occured."
+                    return
                 }
+                playSongResultDiv.innerHTML = `Progress Bar has not reached 70%`
             }
 
-            function addToPlaylist() {
-                console.log("Adding song to playlist...");
-            }
+            const addSongButton = document.getElementById('add-to-playlist')
+            addSongButton.innerHTML = `<a href="http://127.0.0.1:8000/playlist/add-song-to-any-playlist-page/${emailData}/${idSongData}">Add to Playlist</a>`
+
+            const downloadSongButton = document.getElementById('down-song')
+            downloadSongButton.innerHTML = `<a href="http://127.0.0.1:8000/playlist/download-song-page/${emailData}/${idSongData}">Download Song</a>`
 
             function downloadSong() {
                 console.log("Downloading song...");
@@ -62,6 +82,18 @@
             function goBack() {
                 console.log("Going back to previous page...");
             }
+
+            const songDetailsDiv = document.getElementById("song-details")
+            songDetailsDiv.innerHTML = `<h1>Judul: ${judulData}</h1>
+                                        <p>Genre: ${genreData}</p>
+                                        <p>Artist: ${namaArtisData}</p>
+                                        <p>Songwriter: ${namaSongwriterData}</p>
+                                        <p>Duration: ${durasiData}</p>
+                                        <p>Release Date: ${tanggalRilisData}</p>
+                                        <p>Year: ${tahunData}</p>
+                                        <p>Total Plays: ${totalPlayData}</p>
+                                        <p>Total Downloads: ${totalDownloadData}</p>
+                                        <p>Album: ${albumData}</p>`
         </script>
     </body>
 </html>
