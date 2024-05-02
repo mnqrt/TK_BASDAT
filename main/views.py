@@ -134,13 +134,12 @@ def search(request):
                         JOIN akun ak on ak.email = a.email_akun
                         WHERE k.judul ~* '(?i){keyword}'
                         """
-        # query_podcast =f"""SELECT 'SONG' AS tipe, k.judul, ak.nama
-        #                 FROM konten k
-        #                 LEFT JOIN song s on k.id = s.id_konten
-        #                 LEFT JOIN artist a on s.id_artist = a.id
-        #                 LEFT JOIN akun ak on ak.email = a.email_akun
-        #                 WHERE k.judul ~* '(?i)\{keyword}\M'
-                        # """
+        query_podcast =f"""SELECT 'PODCAST' AS tipe, k.judul, ak.nama
+                        FROM konten k
+                        LEFT JOIN podcast p on k.id = p.id_konten
+                        LEFT JOIN akun ak on ak.email = p.email_podcaster
+                        WHERE k.judul ~* '(?i){keyword}'
+                        """
         query_playlist = f"""SELECT 'USER PLAYLIST' AS tipe, up.judul, ak.nama
                             FROM user_playlist up
                             JOIN akun ak on ak.email = up.email_pembuat
@@ -148,6 +147,7 @@ def search(request):
                         """
         
         query_result.extend(query(query_song))
+        query_result.extend(query(query_podcast))
         query_result.extend(query(query_playlist))
         print(query_result)
         return render(request, 'main/search.html',{'context':context,'konten':query_result,'keyword':keyword})
