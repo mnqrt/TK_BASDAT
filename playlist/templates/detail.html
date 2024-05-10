@@ -9,6 +9,8 @@
 <body>
     <h1>User Playlist Detail</h1>
     <div id="playlist-detail"></div>
+    <button id="shuffle-play">shuffle play</button>
+    <div><a href="/">kembali</a></div>
     <div id="song-list"></div>
     
 
@@ -48,9 +50,11 @@
         var userPlaylistData = {{ user_playlist|safe }};
         var songsData = {{ songs|safe }};
         var namaData = {{ nama|safe }}
+        var emailData = `${{ email|safe }}`.slice(1)
         console.log(userPlaylistData)
         console.log(songsData)
         console.log(namaData)
+        console.log(emailData)
 
         var playlistDetailDiv = document.getElementById("playlist-detail")
         playlistDetailDiv.innerHTML = `
@@ -79,17 +83,32 @@
                                     <td>${song.durasi} menit</td>
                                     <td>
                                         <button>Lihat</button>
-                                        <button>Play</button>
-                                        <button>Hapus</button>
+                                        <button><a href="http://127.0.0.1:8000/playlist/play-song-page/${emailData}/${song.id_konten}">Play</a></button>
+                                        <button id="delete-${song.id_konten}">Hapus</button>
                                     </td>
                                     </br>
                                 </tr>`
         }
         songListHTML += `</tbody></table>
-                <button type="button">Tambah Lagu</button>`
+            <a href="/playlist/add-song-page/${userPlaylistData.id_user_playlist}"><button type="button">Tambah Lagu</button></a>`
         songListDiv.innerHTML = songListHTML
 
+        for (const song of songsData) {
+            const deleteSongButton = document.getElementById(`delete-${song.id_konten}`)
+            deleteSongButton.addEventListener('click', async () => {
+                console.log(`hapus-${userPlaylistData.id_user_playlist}`)
+                await fetch(`http://127.0.0.1:8000/playlist/delete-song/${userPlaylistData.id_user_playlist}/${song.id_konten}`)
+                window.location.reload();
+            })
+        }
 
+
+        const shufflePlayButton = document.getElementById('shuffle-play')
+        shufflePlayButton.addEventListener('click', async () => {
+            const res = await fetch(`http://127.0.0.1:8000/playlist/akun-play-user-playlist/${emailData}/${userPlaylistData.id_user_playlist}`)
+            console.log(res)
+            // window.location.reload();
+        })
 
 
     </script>
