@@ -13,6 +13,7 @@
     <select name="songs" id="song-dropdown"></select>
 
     <button onclick="addSong()" id="button-add">Add Song</button>
+    <div id="fail"></div>
 
     <script>
         var songArtistData = {{ song_artist|safe }}
@@ -26,16 +27,19 @@
             songArtistHTML += `<option value="${songArtist.id_lagu}">${songArtist.judul_lagu} - ${songArtist.nama_artis}</option>`
         }
         songArtistDropdown.innerHTML = songArtistHTML
+        var addSongButton = document.getElementById("button-add")
+        addSongButton.innerHTML = `Add Song`
 
         async function addSong() {
             const songDropDown = document.getElementById("song-dropdown")
             console.log(songDropDown.value)
             const res = await fetch(`http://127.0.0.1:8000/playlist/add-song/${idUserPlayListData}/${songDropDown.value}`)
-            console.log(res)
+            if (! res.ok) {
+                document.getElementById("fail").innerHTML = "Lagu sudah ada!"
+                return
+            }
+            window.location.href=`http://127.0.0.1:8000/playlist/show-one-by-id/${idUserPlayListData}`
         }
-
-        var addSongButton = document.getElementById("button-add")
-        addSongButton.innerHTML = `<a href="http://127.0.0.1:8000/playlist/show-one-by-id/${idUserPlayListData}">Add Song</a>`
     </script>
 </body>
 </html>

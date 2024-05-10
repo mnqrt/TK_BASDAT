@@ -12,11 +12,13 @@
         const emailData = `${{ email|safe }}`.slice(1)
         const idSongData = `${{ id_song|safe }}`.slice(1)
         const titleData = `${{ judul|safe }}`.slice(1)
+        const statusData = `${{ status|safe }}`.slice(1)
         print(emailData, idSongData)
         const downloadDescriptionDiv = document.getElementById("desc-down")
-        downloadDescriptionDiv.innerHTML = `<h1>Berhasil mengunduh Lagu dengan judul ‘${titleData}’!</h1> 
+        const statusUnduh = statusData === "success" ? `<h1>Berhasil mengunduh Lagu dengan judul ‘${titleData}’!</h1>` : `<h1>Lagu dengan judul ‘${titleData}’ sudah pernah diunduh!</h1>`
+        downloadDescriptionDiv.innerHTML = `${statusUnduh}
         <a href="http://127.0.0.1:8000/playlist">[KE DAFTAR DOWNLOAD]</a>
-                                            <a href="http://127.0.0.1:8000/playlist/play-song-page/${emailData}/${idSongData}">Kembali</a>`
+        <a href="http://127.0.0.1:8000/playlist/play-song-page/${emailData}/${idSongData}">Kembali</a>`
         
     </script>
 </body>

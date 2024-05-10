@@ -1,4 +1,6 @@
-from http.client import HTTPResponse
+from datetime import datetime
+from django.http import HttpResponse
+import uuid
 from django.shortcuts import render
 from django.http import JsonResponse
 from utils.query import query
@@ -11,7 +13,7 @@ def show_playlists_by_email(request, email):
     user_playlists = query(query_str)
     for user_playlist in user_playlists:
         user_playlist['tanggal_dibuat'] = user_playlist['tanggal_dibuat'].strftime('%Y-%m-%d')
-    return render(request, 'index.html', {'playlists': user_playlists})
+    return render(request, 'index.html', {'playlists': user_playlists, 'email': email})
 
 def show_playlist_by_id(request, id_user_playlist):
 
@@ -26,7 +28,8 @@ def show_playlist_by_id(request, id_user_playlist):
         query_str = f"""SELECT 
                             K.judul AS judul,
                             A.nama AS nama_artis,
-                            K.durasi AS durasi
+                            K.durasi AS durasi,
+                            S.id_konten AS id_konten
                         FROM PLAYLIST_SONG PS
                         JOIN SONG S ON S.id_konten=PS.id_song
                         JOIN KONTEN K ON K.id=S.id_konten
@@ -39,7 +42,7 @@ def show_playlist_by_id(request, id_user_playlist):
         nama = query(query_str)[0]
 
 
-        return render(request, 'detail.html', {'user_playlist': user_playlist, 'songs': songs, 'nama': nama})
+        return render(request, 'detail.html', {'user_playlist': user_playlist, 'songs': songs, 'nama': nama, 'email':email})
     except:
         return render(request, 'failed.html')
     
@@ -54,12 +57,6 @@ def add_song_to_playlist_page(request, id_user_playlist):
                 JOIN SONGWRITER sw ON sws.id_songwriter=sw.id
                 JOIN KONTEN k ON k.id=s.id_konten
                 JOIN AKUN a ON a.email=sw.email_akun
-                WHERE s.id_konten NOT in (
-                    SELECT id_song
-                    FROM PLAYLIST_SONG ps
-                    JOIN USER_PLAYLIST up ON ps.id_playlist=up.id_playlist
-                    WHERE up.id_user_playlist='{id_user_playlist}'
-                )
                 """
     songs_with_artist = query(query_str)
     return render(request, 'add-song.html', {'song_artist':songs_with_artist, 'id_user_playlist': id_user_playlist})
@@ -70,7 +67,21 @@ def add_song_to_playlist(request, id_user_playlist, id_song):
         id_playlist = query(query_str)[0]['id_playlist']
         query_str = f"INSERT INTO PLAYLIST_SONG (id_playlist, id_song) VALUES('{id_playlist}', '{id_song}')"
         add_song_res = query(query_str)
-        return HTTPResponse("Song added to playlist successfully!")
+
+        if "RAISE" in str(add_song_res):
+            print("FAIL")
+            return JsonResponse({"fail":True}, status=401)
+        return JsonResponse({"fail":False}, status=201)
+    except:
+        return render(request, 'failed.html')
+    
+def delete_song_from_playlist(request, id_user_playlist, id_song):
+    try:
+        query_str = f"SELECT id_playlist FROM USER_PLAYLIST WHERE id_user_playlist='{id_user_playlist}'"
+        id_playlist = query(query_str)[0]['id_playlist']
+        query_str = f"DELETE FROM PLAYLIST_SONG WHERE id_playlist='{id_playlist}' AND id_song='{id_song}'"
+        delete_song_res = query(query_str)
+        return HttpResponse("Song deleted playlist successfully!")
     except:
         return render(request, 'failed.html')
 
@@ -154,7 +165,7 @@ def play_song(request, email, id_song):
     try:
         query_str = f"INSERT INTO TABLE (email_pemain, id_song) VALUES ('{email}', '{id_song}')"
         res = query(query_str)
-        return HTTPResponse("Song added to playlist successfully!")
+        return HttpResponse("Song added to playlist successfully!")
     except:
         return render(request, 'failed.html')
 
@@ -168,12 +179,7 @@ def add_song_to_any_playlist_page(request, email, id_song):
     judul_artis = query(query_str)[0]
     judul, artis = judul_artis['judul'], judul_artis['nama_artis']
 
-    query_str = f"""SELECT * FROM USER_PLAYLIST up WHERE up.email_pembuat='{email}' AND
-                    '{id_song}' NOT IN (
-                        SELECT ps.id_song
-                        FROM PLAYLIST_SONG ps 
-                        WHERE ps.id_playlist=up.id_playlist
-                    )"""
+    query_str = f"""SELECT * FROM USER_PLAYLIST up WHERE up.email_pembuat='{email}'"""
     user_playlists = query(query_str)
     print("--->",user_playlists)
     for user_playlist in user_playlists:
@@ -189,17 +195,73 @@ def download_song_page(request, email, id_song):
     judul = query(query_str)[0]['judul']
 
     query_str = f"INSERT INTO DOWNLOADED_SONG(id_song, email_downloader) VALUES ('{id_song}', '{email}')"
+    status="success"
+    res = query(query_str)
+    if "RAISE" in str(res):
+        status="fail"
+    print(res)
+    return render(request, "down-song.html", {'email':email, 'id_song':id_song, 'judul': judul, 'fail': status})
+
+def add_playlist(request, email, judul, deskripsi):
+    playlist_id = uuid.uuid4()
+    user_playlist_id = uuid.uuid4()
+    query_str = f"""INSERT INTO PLAYLIST (id) VALUES ('{playlist_id}')"""
     res = query(query_str)
 
-    print(res)
-    return render(request, "down-song.html", {'email':email, 'id_song':id_song, 'judul': judul})
+    query_str = f"""INSERT INTO USER_PLAYLIST (email_pembuat, id_user_playlist, judul, deskripsi, jumlah_lagu, tanggal_dibuat, id_playlist, total_durasi) VALUES 
+                    ('{email}', '{user_playlist_id}', '{judul}', '{deskripsi}', 0, '{datetime.now().strftime('%Y-%m-%d')}', '{playlist_id}', 0)"""
+    res = query(query_str)
 
+    return HttpResponse('Berhasil add playlist')
+
+def delete_playlist(request, id_user_playlist):
+    query_str = f"""SELECT id_playlist FROM USER_PLAYLIST WHERE id_user_playlist='{id_user_playlist}'"""
+    id_playlist = query(query_str)[0]['id_playlist']
+
+    query_str = f"""DELETE FROM USER_PLAYLIST WHERE id_user_playlist='{id_user_playlist}'"""
+    res = query(query_str)
+    print(":-",res)
+
+    query_str = f"""DELETE FROM PLAYLIST WHERE id='{id_playlist}'"""
+    res = query(query_str)
+    print(":::",res)
+
+    return HttpResponse('Berhasil delete playlist')
+
+
+def update_playlist(request, id_user_playlist, title, description):
+    query_str = f"""UPDATE USER_PLAYLIST SET judul='{title}', deskripsi='{description}' WHERE id_user_playlist='{id_user_playlist}'"""
+    res = query(query_str)
+
+    return HttpResponse('Berhasil update playlist')
+
+def akun_play_user_playlist(request, email, id_user_playlist):
+    query_str = f"""SELECT email_pembuat FROM USER_PLAYLIST WHERE id_user_playlist='{id_user_playlist}'"""
+    email_pembuat=query(query_str)[0]['email_pembuat']
+
+    query_str = f"""SELECT ps.id_song as id_song FROM USER_PLAYLIST up JOIN PLAYLIST_SONG ps ON up.id_playlist=ps.id_playlist WHERE up.id_user_playlist='{id_user_playlist}'"""
+    list_id_song = query(query_str)
+    print(":::",list_id_song)
+
+    query_str = f"""INSERT INTO AKUN_PLAY_USER_PLAYLIST (email_pemain, id_user_playlist, email_pembuat, waktu) VALUES ('{email}', '{id_user_playlist}', '{email_pembuat}', '{datetime.now().strftime('%Y-%m-%d')}')"""
+    res = query(query_str)
+
+    query_str = f"""INSERT INTO AKUN_PLAY_SONG (email_pemain, id_song, waktu) VALUES"""
+
+    for idx,id_song_obj in enumerate(list_id_song) :
+        id_song = id_song_obj['id_song']
+        query_str += f"""('{email}', '{id_song}', '{datetime.now().strftime('%Y-%m-%d')}')"""
+        query_str += "," if idx != len(list_id_song) - 1 else ""
+    res = query(query_str)
+
+    return HttpResponse('Berhasil play playlist')
 
 
 # Create your views here.
 def show_song(request):
     query_str = "SELECT * FROM konten"
     hasil = query(query_str)
+    print(hasil)
     return render(request, 'konten.html', {'konten': hasil})
 
 """

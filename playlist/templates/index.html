@@ -24,6 +24,20 @@
         </form>
     </div>
 
+    <div id="update-playlist-form" style="display: none;">
+        <h2>Ubah Playlist</h2>
+        <form id="update-form">
+            <input type="hidden" id="update-playlist-id">
+            <label for="update-playlist-title">Judul:</label>
+            <input type="text" id="update-playlist-title" name="update-playlist-title" placeholder="Masukkan judul playlist">
+            <br>
+            <label for="update-playlist-description">Deskripsi:</label>
+            <textarea id="update-playlist-description" name="update-playlist-description" placeholder="Masukkan deskripsi playlist"></textarea>
+            <br>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+
     <style>
         #playlist-table {
             border: 0; 
@@ -47,18 +61,41 @@
             border-radius: 5px; 
             cursor: pointer; 
         }
+
+        .button-link {
+            text-decoration: none; /* Remove underline */
+            border: none;          /* Remove border */
+            background-color: #f0f0f0; /* Hover effect */
+            border-radius: 3px;        /* Rounded corners for hover effect */
+        }
+
+
+        button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
     </style>
 
     <script>
         function showCreatePlaylistForm() {
-            const playlists = document.getElementById('playlists');
-            const createPlaylistForm = document.getElementById('create-playlist-form');
-            playlists.style.display = 'none';
-            createPlaylistForm.style.display = 'block';
+            document.getElementById('playlists').style.display = 'none';
+            document.getElementById('create-playlist-form').style.display = 'block';
+            document.getElementById('update-playlist-form').style.display = 'none';
+        }
+
+        function showUpdatePlaylistForm(playlist) {
+            document.getElementById('playlists').style.display = 'none';
+            document.getElementById('create-playlist-form').style.display = 'none';
+            document.getElementById('update-playlist-form').style.display = 'block';
+            
+            document.getElementById('update-playlist-id').value = playlist.id_user_playlist;
+            document.getElementById('update-playlist-title').value = playlist.judul;
+            document.getElementById('update-playlist-description').value = playlist.deskripsi;
         }
 
         var playlistData = {{ playlists|safe }};
-        console.log(playlistData)
+        var emailData = `${{ email|safe }}`.slice(1)
+        console.log(playlistData,emailData)
         var playlistDiv = document.getElementById("playlists")
         if (playlistData.length === 0) {
             playlistDiv.innerHTML = `<h2>Anda Belum Memiliki Playlist</h2>
@@ -81,9 +118,9 @@
                                                     <td>${playlist.jumlah_lagu}</td>
                                                     <td>${playlist.total_durasi} menit</td>
                                                     <td>
-                                                        <a href="/playlist/show-one-by-id/${playlist.id_user_playlist}">Detail</a>
-                                                        <button>Ubah</button>
-                                                        <button>Hapus</button>
+                                                        <a href="/playlist/show-one-by-id/${playlist.id_user_playlist}" class="button-link"><button>Detail</button></a>
+                                                        <button onclick='showUpdatePlaylistForm(${JSON.stringify(playlist)})'>Ubah</button>
+                                                        <button id="hapus-${playlist.id_user_playlist}">Hapus</button>
                                                     </td>
                                                     </br>
                                                 </tr>`
@@ -91,7 +128,37 @@
                 playlistTableHTML += `</tbody></table>
                 <button type="button" onclick="showCreatePlaylistForm()">Tambah Playlist</button>`
                 playlistDiv.innerHTML = playlistTableHTML
+
+                for(const playlist of playlistData) {
+                    var deletePlaylist = document.getElementById(`hapus-${playlist.id_user_playlist}`)
+                    deletePlaylist.addEventListener('click', async () => {
+                        console.log(`hapus-${playlist.id_user_playlist}`)
+                        await fetch(`http://127.0.0.1:8000/playlist/delete-playlist/${playlist.id_user_playlist}`)
+                        window.location.reload();
+                    })
+                }
         }
+
+
+        const form = document.getElementById('playlist-form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const title = document.getElementById('playlist-title').value;
+            const description = document.getElementById('playlist-description').value;
+            console.log(`http://127.0.0.1:8000/playlist/add-playlist/${emailData}/${title}/${description}`)
+            const res = await fetch(`http://127.0.0.1:8000/playlist/add-playlist/${emailData}/${title}/${description}`)
+            window.location.reload();
+        });
+
+        const updateForm = document.getElementById('update-form');
+        updateForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const id_user_playlist = document.getElementById('update-playlist-id').value;
+            const title = document.getElementById('update-playlist-title').value;
+            const description = document.getElementById('update-playlist-description').value;
+            await fetch(`http://127.0.0.1:8000/playlist/update-playlist/${id_user_playlist}/${title}/${description}`);
+            window.location.reload();
+        });
 
     </script>
 </body>
