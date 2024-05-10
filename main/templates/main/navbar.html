@@ -7,10 +7,11 @@
             <li><a href="{% url 'main:show_homepage' %}">Dashboard</a></li>
             {% if not context.is_label %}
             <li><a href="#">Chart</a></li>
-            <li><div class="search-bar">
-                <input type="text" placeholder="Search...">
-                <button type="submit">Search</button>
-            </div>
+            <li>
+                <form action="/search" method="GET"> 
+                    <input type="text" name="query" placeholder="Search..."> 
+                    <button type="submit">Search</button>
+                </form>
             </li>
             <li><a href="#">Kelola Playlist</a></li>
             <li><a href="{% url 'subscription:show_offers' %}">Langganan Paket</a></li>
@@ -85,3 +86,4 @@
         padding-top: 60px; /* Adjust this value based on the height of your navigation bar */
     }
 </style>
+
