@@ -255,36 +255,3 @@ def akun_play_user_playlist(request, email, id_user_playlist):
     res = query(query_str)
 
     return HttpResponse('Berhasil play playlist')
-
-
-# Create your views here.
-def show_song(request):
-    query_str = "SELECT * FROM konten"
-    hasil = query(query_str)
-    print(hasil)
-    return render(request, 'konten.html', {'konten': hasil})
-
-"""
-SELECT
-    k.judul AS judul_lagu,
-    a.nama AS nama_artis
-FROM SONG s
-JOIN SONGWRITER_WRITE_SONG sws ON s.id_konten=sws.id_song
-JOIN SONGWRITER sw ON sws.id_songwriter=sw.id
-JOIN KONTEN k ON k.id=s.id_konten
-JOIN AKUN a ON a.email=sw.email_akun
-
-SELECT COUNT(*) AS total_download
-                    FROM SONG s
-                    LEFT JOIN DOWNLOADED_SONG ds ON ds.id_song=s.id_konten
-                    GROUP BY s.id_konten
-                    WHERE s.id_konten='b8e409f4-89b9-4914-99e2-743c6411c8fb'
-
-
-                    v
-
-                    SELECT k.judul AS judul 
-                    FROM SONG s 
-                    JOIN KONTEN k ON k.id=s.id_konten 
-                    WHERE s.id_konten='b8e409f4-89b9-4914-99e2-743c6411c8fb'
-"""

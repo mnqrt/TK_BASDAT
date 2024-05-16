@@ -83,7 +83,7 @@
                                     <td>${song.durasi} menit</td>
                                     <td>
                                         <button>Lihat</button>
-                                        <button><a href="http://127.0.0.1:8000/playlist/play-song-page/${emailData}/${song.id_konten}">Play</a></button>
+                                        <button><a href="/playlist/play-song-page/${emailData}/${song.id_konten}">Play</a></button>
                                         <button id="delete-${song.id_konten}">Hapus</button>
                                     </td>
                                     </br>
@@ -97,7 +97,7 @@
             const deleteSongButton = document.getElementById(`delete-${song.id_konten}`)
             deleteSongButton.addEventListener('click', async () => {
                 console.log(`hapus-${userPlaylistData.id_user_playlist}`)
-                await fetch(`http://127.0.0.1:8000/playlist/delete-song/${userPlaylistData.id_user_playlist}/${song.id_konten}`)
+                await fetch(`/playlist/delete-song/${userPlaylistData.id_user_playlist}/${song.id_konten}`)
                 window.location.reload();
             })
         }
@@ -105,7 +105,7 @@
 
         const shufflePlayButton = document.getElementById('shuffle-play')
         shufflePlayButton.addEventListener('click', async () => {
-            const res = await fetch(`http://127.0.0.1:8000/playlist/akun-play-user-playlist/${emailData}/${userPlaylistData.id_user_playlist}`)
+            const res = await fetch(`/playlist/akun-play-user-playlist/${emailData}/${userPlaylistData.id_user_playlist}`)
             console.log(res)
             // window.location.reload();
         })

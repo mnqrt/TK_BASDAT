@@ -37,19 +37,19 @@
         async function addToPlaylist() {
             const selectPlaylistDropdown = document.getElementById('playlist-select')
             console.log(selectPlaylistDropdown.value)
-            const res = await fetch(`http://127.0.0.1:8000/playlist/add-song/${selectPlaylistDropdown.value}/${idSongData}`)
+            const res = await fetch(`/playlist/add-song/${selectPlaylistDropdown.value}/${idSongData}`)
             console.log(res)
 
             if (res.ok) {
                 addSongResponseDiv.innerHTML = `<div>Berhasil menambahkan Lagu dengan judul ‘${titleData}’ ke ‘${selectPlaylistDropdown.value}’!</div>
-                    <a href="http://127.0.0.1:8000/playlist/show-one-by-id/${selectPlaylistDropdown.value}">[KE PLAYLIST]</a>
-                    <a href="http://127.0.0.1:8000/playlist/play-song-page/${emailData}/${idSongData}">[KEMBALI]</a>
+                    <a href="/playlist/show-one-by-id/${selectPlaylistDropdown.value}">[KE PLAYLIST]</a>
+                    <a href="/playlist/play-song-page/${emailData}/${idSongData}">[KEMBALI]</a>
                 `
                 return
             }
             addSongResponseDiv.innerHTML = `<div>Lagu dengan judul ‘${titleData}’ sudah ditambahkan di ‘${selectPlaylistDropdown.value}’!</div>
-                    <a href="http://127.0.0.1:8000/playlist/show-one-by-id/${selectPlaylistDropdown.value}">[KE PLAYLIST]</a>
-                    <a href="http://127.0.0.1:8000/playlist/play-song-page/${emailData}/${idSongData}">[KEMBALI]</a>
+                    <a href="/playlist/show-one-by-id/${selectPlaylistDropdown.value}">[KE PLAYLIST]</a>
+                    <a href="/playlist/play-song-page/${emailData}/${idSongData}">[KEMBALI]</a>
                 `
         }
         
