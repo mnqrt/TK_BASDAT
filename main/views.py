@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render,redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, QueryDict
@@ -154,3 +155,34 @@ def search(request):
     
     return HttpResponse("search failed", status=400)
 
+def register_page(request):
+    return render(request, 'main/register.html')
+
+def register_label_page(request):
+    return render(request, 'main/register_label.html')
+
+def register_pengguna_page(request):
+    return render(request, 'main/register_pengguna.html')
+
+def register_label(request):
+    pass
+
+@csrf_exempt
+def register_pengguna(request):
+    data = json.loads(request.body)
+    email = data.get('email')
+    password = data.get('password')
+    nama = data.get('name')
+    gender = 0 if data.get('gender') == "female" else 1
+    tempat_lahir = data.get('birthplace')
+    tanggal_lahir = data.get('birthdate')
+    kota_asal = data.get('city')
+    role = data.get('role') 
+    is_verified = "TRUE" if role is not None else "FALSE"
+    print(data)
+
+    query_str = f"""INSERT INTO AKUN (nama, email, password, gender, tempat_lahir, tanggal_lahir, is_verified, kota_asal) VALUES 
+                    ('{nama}', '{email}', '{password}', {gender}, '{tempat_lahir}', '{tanggal_lahir}', {is_verified}, '{kota_asal}')"""
+    res = query(query_str)
+    print("::",res)
+    return HttpResponse({})

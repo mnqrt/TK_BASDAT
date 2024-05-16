@@ -2,7 +2,7 @@
     <ul>
         {% if not context.is_active %}
         <li><a href="{% url 'main:login' %}">Login</a></li>
-        <li><a href="#">Register</a></li>
+        <li><a href="/register">Register</a></li>
         {% elif context.is_active %}
             <li><a href="{% url 'main:show_homepage' %}">Dashboard</a></li>
             {% if not context.is_label %}
