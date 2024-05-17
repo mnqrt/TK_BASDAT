@@ -22,6 +22,7 @@ def show_offers(request):
 @csrf_exempt
 def payment_page(request,jenis):
     context = get_session_data(request)
+    jenis = jenis.replace("%20"," ")
     query_str = f"SELECT harga FROM paket WHERE jenis='{jenis}'"
     hasil = query(query_str)
     return render(request, 'landing/payment.html', {'jenis': jenis, 'harga': hasil[0]['harga'], 'context':context})
