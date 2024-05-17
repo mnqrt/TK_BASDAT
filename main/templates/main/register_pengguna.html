@@ -108,28 +108,26 @@
     </div>
 
     <script>
-       document.getElementById('registrationForm').addEventListener('submit', async function(event) {
-    event.preventDefault(); // Prevent the default form submission
+    document.getElementById('registrationForm').addEventListener('submit', async function(event) {
+        event.preventDefault(); // Prevent the default form submission
 
-    // Get form data
-    const formData = new FormData(this);
-    
-    // Convert form data to a plain object
-    const formObject = {};
-    formData.forEach((value, key) => {
-        if (formObject[key]) {
-            // If the key already exists, we have a multi-checkbox, so make the value an array
-            formObject[key] = [].concat(formObject[key], value);
-        } else {
-            formObject[key] = value;
-        }
-    });
+        // Get form data
+        const formData = new FormData(this);
+        
+        // Convert form data to a plain object
+        const formObject = {};
+        formData.forEach((value, key) => {
+            if (formObject[key]) {
+                // If the key already exists, we have a multi-checkbox, so make the value an array
+                formObject[key] = [].concat(formObject[key], value);
+            } else {
+                formObject[key] = value;
+            }
+        });
 
-    // Log the form data to the console
-    console.log('Form Data:', formObject);
+        // Log the form data to the console
+        console.log('Form Data:', formObject);
 
-    try {
-        // Send form data to the server
         const response = await fetch('/reg-pengguna/', {
             method: 'POST',
             headers: {
@@ -139,13 +137,9 @@
         });
 
         const result = await response.json();
+        console.log(response)
         document.getElementById('responseMessage').innerText = JSON.stringify(result, null, 2);
-    } catch (error) {
-        document.getElementById('responseMessage').innerText = 'An error occurred during registration.';
-    }
-});
-
-
+    });
     </script>
 </body>
 </html>
