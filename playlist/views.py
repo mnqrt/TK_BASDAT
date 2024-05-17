@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from utils.query import query
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-
+from utils.session_data import get_session_data
 
 def show_playlists_by_email(request):
     email = request.session['email']
@@ -14,7 +14,10 @@ def show_playlists_by_email(request):
     user_playlists = query(query_str)
     for user_playlist in user_playlists:
         user_playlist['tanggal_dibuat'] = user_playlist['tanggal_dibuat'].strftime('%Y-%m-%d')
-    return render(request, 'index.html', {'playlists': user_playlists, 'email': email})
+        user_playlist['id_user_playlist'] = str(user_playlist['id_user_playlist'])  # Convert UUID to string
+        user_playlist['id_playlist'] = str(user_playlist['id_playlist'])  # Convert UUID to string
+    context = get_session_data(request)
+    return render(request, 'index.html', {'playlists': user_playlists, 'email': email, 'context': context})
 
 def show_playlist_by_id(request, id_user_playlist):
 
@@ -39,6 +42,9 @@ def show_playlist_by_id(request, id_user_playlist):
                         WHERE PS.id_playlist='{playlist_id}'"""
         songs = query(query_str)
 
+        for song in songs:
+            song['id_konten'] = str(song['id_konten'])
+
         query_str = f"""SELECT nama FROM AKUN WHERE email='{email}'"""
         nama = query(query_str)[0]
 
@@ -60,6 +66,8 @@ def add_song_to_playlist_page(request, id_user_playlist):
                 JOIN AKUN a ON a.email=sw.email_akun
                 """
     songs_with_artist = query(query_str)
+    for swa in songs_with_artist:
+        swa['id_lagu']=str(swa['id_lagu'])
     return render(request, 'add-song.html', {'song_artist':songs_with_artist, 'id_user_playlist': id_user_playlist})
 
 def add_song_to_playlist(request, id_user_playlist, id_song):

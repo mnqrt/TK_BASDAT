@@ -7,35 +7,39 @@
     <title>CRUD Playlist Management System</title>
 </head>
 <body>
-    <h1>User Playlists</h1>
+    {% include 'main/navbar.html' with context=context only  %}
+    <div>
+        <h1>User Playlists</h1>
+        <h1>User Playlists</h1>
 
-    <div id="playlists"></div>
+        <div id="playlists"></div>
 
-    <div id="create-playlist-form" style="display: none;">
-        <h2>Tambah Playlist</h2>
-        <form id="playlist-form">
-            <label for="playlist-title">Judul:</label>
-            <input type="text" id="playlist-title" name="playlist-title" placeholder="Masukkan judul playlist">
-            <br>
-            <label for="playlist-description">Deskripsi:</label>
-            <textarea id="playlist-description" name="playlist-description" placeholder="Masukkan deskripsi playlist"></textarea>
-            <br>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+        <div id="create-playlist-form" style="display: none;">
+            <h2>Tambah Playlist</h2>
+            <form id="playlist-form">
+                <label for="playlist-title">Judul:</label>
+                <input type="text" id="playlist-title" name="playlist-title" placeholder="Masukkan judul playlist">
+                <br>
+                <label for="playlist-description">Deskripsi:</label>
+                <textarea id="playlist-description" name="playlist-description" placeholder="Masukkan deskripsi playlist"></textarea>
+                <br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
 
-    <div id="update-playlist-form" style="display: none;">
-        <h2>Ubah Playlist</h2>
-        <form id="update-form">
-            <input type="hidden" id="update-playlist-id">
-            <label for="update-playlist-title">Judul:</label>
-            <input type="text" id="update-playlist-title" name="update-playlist-title" placeholder="Masukkan judul playlist">
-            <br>
-            <label for="update-playlist-description">Deskripsi:</label>
-            <textarea id="update-playlist-description" name="update-playlist-description" placeholder="Masukkan deskripsi playlist"></textarea>
-            <br>
-            <button type="submit">Update</button>
-        </form>
+        <div id="update-playlist-form" style="display: none;">
+            <h2>Ubah Playlist</h2>
+            <form id="update-form">
+                <input type="hidden" id="update-playlist-id">
+                <label for="update-playlist-title">Judul:</label>
+                <input type="text" id="update-playlist-title" name="update-playlist-title" placeholder="Masukkan judul playlist">
+                <br>
+                <label for="update-playlist-description">Deskripsi:</label>
+                <textarea id="update-playlist-description" name="update-playlist-description" placeholder="Masukkan deskripsi playlist"></textarea>
+                <br>
+                <button type="submit">Update</button>
+            </form>
+        </div>
     </div>
 
     <style>
@@ -77,6 +81,7 @@
     </style>
 
     <script>
+        function UUID(s){return s}
         function showCreatePlaylistForm() {
             document.getElementById('playlists').style.display = 'none';
             document.getElementById('create-playlist-form').style.display = 'block';

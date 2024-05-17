@@ -10,6 +10,7 @@
     <div id="hidden-add-song" style="display: block;"></div>
 
     <script>
+        function UUID(s){return s}
         const titleData = `${{ judul|safe }}`.slice(1)
         const artistData = `${{ artis|safe }}`.slice(1)
         const playlistsData = {{ playlists|safe }}

@@ -16,6 +16,7 @@
     <div id="fail"></div>
 
     <script>
+        function UUID(s){return s}
         var songArtistData = {{ song_artist|safe }}
         var idUserPlayListData = `${{ id_user_playlist|safe }}`.slice(1)
         console.log(songArtistData)
