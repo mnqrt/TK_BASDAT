@@ -23,9 +23,32 @@
 
     <script>
         function processPayment() {
-            var selectedPaymentMethod = document.getElementById('paymentMethod').value;
-    
-        }
+            var method = document.getElementById('paymentMethod').value;
+            var type = "{{ jenis }}";
+            var price = "{{ harga }}";
+            var email = "{{ context.email }}"
+
+            fetch("{% url 'subscription:process' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `type=${encodeURIComponent(type)}&price=${encodeURIComponent(price)}&method=${encodeURIComponent(method)}&email=${encodeURIComponent(email)}`
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "{% url 'subscription:show_offers' %}";
+            } else {
+                response.text().then(message => {
+                    alert(message);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error during login:', error);
+        });
+    }
+        
     </script>
 </body>
 </html>

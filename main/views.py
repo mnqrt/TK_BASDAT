@@ -9,7 +9,7 @@ from utils.session_data import get_session_data
 
 def show_homepage(request):
     context = get_session_data(request)
-
+    print(context)
     return render(request, 'main/index.html',{'context':context})
 
 def login_page(request):
@@ -111,7 +111,8 @@ def authenticate_user(request):
         request.session["is_active"] = True
         request.session["email"] = email
         return HttpResponse("OK", status=200)
-            
+    
+    return HttpResponse("Authentication failed", status=400)      
   
 # @login_required
 def logout(request):

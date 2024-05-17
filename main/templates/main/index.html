@@ -8,7 +8,74 @@
 <body>
     {% include 'main/navbar.html' %}
     <div class="content">
-        <h1>Marmut</h1>
+        <h1>R DASHBOARD (SEMUA)</h1>
+
+        <!-- Informasi Pengguna -->
+        <div>
+            <h2>Informasi Pengguna</h2>
+            <ul>
+                <li><strong>Nama:</strong> a</li>
+                <li><strong>Email:</strong> {{ context.email }} </li>
+                <li><strong>Kontak:</strong> [Kontak Pengguna (jika Label)]</li>
+                <li><strong>Kota Asal:</strong> [Kota Asal Pengguna (jika Pengguna)]</li>
+                <li><strong>Gender:</strong> [Gender Pengguna (jika Pengguna)]</li>
+                <li><strong>Tempat Lahir:</strong> [Tempat Lahir Pengguna (jika Pengguna)]</li>
+                <li><strong>Tanggal Lahir:</strong> [Tanggal Lahir Pengguna (jika Pengguna)]</li>
+                <li><strong>Role:</strong> [Role Pengguna (jika Pengguna)]</li>
+            </ul>
+        </div>
+
+        <!-- Pengguna Biasa -->
+        <div>
+            <h2>Pengguna Biasa</h2>
+            <p>Daftar playlist:</p>
+            <ul>
+                <!-- List playlist -->
+                <li>[Playlist 1]</li>
+                <li>[Playlist 2]</li>
+                <!-- Add more if necessary -->
+            </ul>
+            <p>(Jika tidak memiliki playlist: "Belum Memiliki Playlist")</p>
+        </div>
+
+        <!-- Artist/Songwriter -->
+        <div>
+            <h2>Artist/Songwriter</h2>
+            <p>Daftar lagu:</p>
+            <ul>
+                <!-- List lagu -->
+                <li>[Lagu 1]</li>
+                <li>[Lagu 2]</li>
+                <!-- Add more if necessary -->
+            </ul>
+            <p>(Jika belum memiliki lagu: "Belum Memiliki Lagu")</p>
+        </div>
+
+        <!-- Podcaster -->
+        <div>
+            <h2>Podcaster</h2>
+            <p>Daftar podcast:</p>
+            <ul>
+                <!-- List podcast -->
+                <li>[Podcast 1]</li>
+                <li>[Podcast 2]</li>
+                <!-- Add more if necessary -->
+            </ul>
+            <p>(Jika belum memiliki podcast: "Belum Memiliki Podcast")</p>
+        </div>
+
+        <!-- Label -->
+        <div>
+            <h2>Label</h2>
+            <p>Daftar album:</p>
+            <ul>
+                <!-- List album -->
+                <li>[Album 1]</li>
+                <li>[Album 2]</li>
+                <!-- Add more if necessary -->
+            </ul>
+            <p>(Jika belum memiliki/memproduksi suatu album: "Belum Memproduksi Album")</p>
+        </div>
     </div>
 </body>
 </html>
