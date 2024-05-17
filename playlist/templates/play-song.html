@@ -61,7 +61,7 @@
                 let progress = document.getElementById('song-progress').value;
                 const playSongResultDiv = document.getElementById("play-song-result")
                 if (progress > 70) {
-                    const res = await fetch(`http://127.0.0.1:8000/playlist/play-song/${emailData}/${idSongData}`)
+                    const res = await fetch(`/playlist/play-song/${idSongData}`)
                     if (res.status == 200) playSongResultDiv.innerHTML = "Song has been played"
                     else                   playSongResultDiv.innerHTML = "An error occured."
                     return
@@ -70,10 +70,10 @@
             }
 
             const addSongButton = document.getElementById('add-to-playlist')
-            addSongButton.innerHTML = `<a href="http://127.0.0.1:8000/playlist/add-song-to-any-playlist-page/${emailData}/${idSongData}">Add to Playlist</a>`
+            addSongButton.innerHTML = `<a href="/playlist/add-song-to-any-playlist-page/${idSongData}">Add to Playlist</a>`
 
             const downloadSongButton = document.getElementById('down-song')
-            downloadSongButton.innerHTML = `<a href="http://127.0.0.1:8000/playlist/down-song-page/${emailData}/${idSongData}">Unduh Lagu</a>`
+            downloadSongButton.innerHTML = `<a href="/playlist/down-song-page/${idSongData}">Unduh Lagu</a>`
 
             function downloadSong() {
                 console.log("Downloading song...");

@@ -8,7 +8,8 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 
 
-def show_playlists_by_email(request, email):
+def show_playlists_by_email(request):
+    email = request.session['email']
     query_str = f"SELECT * FROM USER_PLAYLIST WHERE email_pembuat='{email}'"
     user_playlists = query(query_str)
     for user_playlist in user_playlists:
@@ -67,6 +68,7 @@ def add_song_to_playlist(request, id_user_playlist, id_song):
         id_playlist = query(query_str)[0]['id_playlist']
         query_str = f"INSERT INTO PLAYLIST_SONG (id_playlist, id_song) VALUES('{id_playlist}', '{id_song}')"
         add_song_res = query(query_str)
+        print(add_song_res)
 
         if "RAISE" in str(add_song_res):
             print("FAIL")
@@ -85,7 +87,8 @@ def delete_song_from_playlist(request, id_user_playlist, id_song):
     except:
         return render(request, 'failed.html')
 
-def play_song_page(request, email, id_song):
+def play_song_page(request, id_song):
+    email = request.session['email']
     query_str = f"""SELECT k.judul AS judul 
                     FROM SONG s 
                     JOIN KONTEN k ON k.id=s.id_konten 
@@ -161,7 +164,8 @@ def play_song_page(request, email, id_song):
                                             'total_play':total_play,'total_download':total_download,'album':album,
                                             'email':email, 'id_song':id_song})
 
-def play_song(request, email, id_song):
+def play_song(request, id_song):
+    email = request.session['email']
     try:
         query_str = f"INSERT INTO TABLE (email_pemain, id_song) VALUES ('{email}', '{id_song}')"
         res = query(query_str)
@@ -169,7 +173,8 @@ def play_song(request, email, id_song):
     except:
         return render(request, 'failed.html')
 
-def add_song_to_any_playlist_page(request, email, id_song):
+def add_song_to_any_playlist_page(request, id_song):
+    email = request.session['email']
     query_str = f"""SELECT k.judul AS judul, a.nama AS nama_artis 
                     FROM SONG s 
                     JOIN KONTEN k ON k.id=s.id_konten 
@@ -187,22 +192,27 @@ def add_song_to_any_playlist_page(request, email, id_song):
 
     return render(request, 'add-song-any-playlist.html', {'judul': judul, 'artis': artis, 'playlists': user_playlists, 'id_song': id_song, 'email': email})
 
-def download_song_page(request, email, id_song):
+def download_song_page(request, id_song):
+    email = request.session['email']
     query_str = f"""SELECT k.judul AS judul 
                     FROM SONG s 
                     JOIN KONTEN k ON k.id=s.id_konten 
                     WHERE s.id_konten='{id_song}'"""
     judul = query(query_str)[0]['judul']
 
+    print(":--:",query(f"SELECT * FROM DOWNLOADED_SONG WHERE id_song='{id_song}' AND email_downloader='{email}'"))
+
     query_str = f"INSERT INTO DOWNLOADED_SONG(id_song, email_downloader) VALUES ('{id_song}', '{email}')"
     status="success"
     res = query(query_str)
+    print(res)
     if "RAISE" in str(res):
         status="fail"
     print(res)
     return render(request, "down-song.html", {'email':email, 'id_song':id_song, 'judul': judul, 'fail': status})
 
-def add_playlist(request, email, judul, deskripsi):
+def add_playlist(request, judul, deskripsi):
+    email = request.session['email']
     playlist_id = uuid.uuid4()
     user_playlist_id = uuid.uuid4()
     query_str = f"""INSERT INTO PLAYLIST (id) VALUES ('{playlist_id}')"""
@@ -235,7 +245,8 @@ def update_playlist(request, id_user_playlist, title, description):
 
     return HttpResponse('Berhasil update playlist')
 
-def akun_play_user_playlist(request, email, id_user_playlist):
+def akun_play_user_playlist(request, id_user_playlist):
+    email = request.session['email']
     query_str = f"""SELECT email_pembuat FROM USER_PLAYLIST WHERE id_user_playlist='{id_user_playlist}'"""
     email_pembuat=query(query_str)[0]['email_pembuat']
 
