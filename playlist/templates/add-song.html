@@ -33,12 +33,12 @@
         async function addSong() {
             const songDropDown = document.getElementById("song-dropdown")
             console.log(songDropDown.value)
-            const res = await fetch(`http://127.0.0.1:8000/playlist/add-song/${idUserPlayListData}/${songDropDown.value}`)
+            const res = await fetch(`/playlist/add-song/${idUserPlayListData}/${songDropDown.value}`)
             if (! res.ok) {
                 document.getElementById("fail").innerHTML = "Lagu sudah ada!"
                 return
             }
-            window.location.href=`http://127.0.0.1:8000/playlist/show-one-by-id/${idUserPlayListData}`
+            window.location.href=`/playlist/show-one-by-id/${idUserPlayListData}`
         }
     </script>
 </body>

@@ -133,7 +133,7 @@
                     var deletePlaylist = document.getElementById(`hapus-${playlist.id_user_playlist}`)
                     deletePlaylist.addEventListener('click', async () => {
                         console.log(`hapus-${playlist.id_user_playlist}`)
-                        await fetch(`http://127.0.0.1:8000/playlist/delete-playlist/${playlist.id_user_playlist}`)
+                        await fetch(`/playlist/delete-playlist/${playlist.id_user_playlist}`)
                         window.location.reload();
                     })
                 }
@@ -145,8 +145,8 @@
             event.preventDefault();
             const title = document.getElementById('playlist-title').value;
             const description = document.getElementById('playlist-description').value;
-            console.log(`http://127.0.0.1:8000/playlist/add-playlist/${emailData}/${title}/${description}`)
-            const res = await fetch(`http://127.0.0.1:8000/playlist/add-playlist/${emailData}/${title}/${description}`)
+            console.log(`/playlist/add-playlist/${title}/${description}`)
+            const res = await fetch(`/playlist/add-playlist/${title}/${description}`)
             window.location.reload();
         });
 
@@ -156,7 +156,7 @@
             const id_user_playlist = document.getElementById('update-playlist-id').value;
             const title = document.getElementById('update-playlist-title').value;
             const description = document.getElementById('update-playlist-description').value;
-            await fetch(`http://127.0.0.1:8000/playlist/update-playlist/${id_user_playlist}/${title}/${description}`);
+            await fetch(`/playlist/update-playlist/${id_user_playlist}/${title}/${description}`);
             window.location.reload();
         });
 
