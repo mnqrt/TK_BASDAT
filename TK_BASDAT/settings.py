@@ -79,11 +79,14 @@ WSGI_APPLICATION = 'TK_BASDAT.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',  # Database name
+        'USER': 'postgres.bifgoiocecmaulszyldt',  # Database username
+        'PASSWORD': 'ZtQSa7t2(7Va.@e',  # Database password
+        'HOST': 'aws-0-ap-southeast-1.pooler.supabase.com',  # Database host
+        'PORT': '5432',  # Database port
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
