@@ -20,7 +20,7 @@
                     <td>{{ konten.judul }}</td>
                     <td>{{ konten.nama }}</td>
                     <td>
-                        <button onclick="">Lihat</button>
+                        <button onclick="openSong('{{ konten.id_song}}')">Lihat</button>
                         <button onclick="del('{{ konten.id_song }}', '{{ konten.email_downloader }}')">Hapus</button>
                     </td>
                 </tr>
@@ -49,6 +49,11 @@
                     });
                 }
             })
+        }
+
+        function openSong(id) {
+            const url = `{% url 'play_song_page' 0 %}`.replace('0', id);
+            window.location.href = url;
         }
     </script>
 </body>
