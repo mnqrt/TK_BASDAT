@@ -47,9 +47,10 @@ def show_playlist_by_id(request, id_user_playlist):
 
         query_str = f"""SELECT nama FROM AKUN WHERE email='{email}'"""
         nama = query(query_str)[0]
+        context = get_session_data(request)
 
 
-        return render(request, 'detail.html', {'user_playlist': user_playlist, 'songs': songs, 'nama': nama, 'email':email})
+        return render(request, 'detail.html', {'user_playlist': user_playlist, 'songs': songs, 'nama': nama, 'email':email,'context':context})
     except:
         return render(request, 'failed.html')
     
@@ -65,10 +66,11 @@ def add_song_to_playlist_page(request, id_user_playlist):
                 JOIN KONTEN k ON k.id=s.id_konten
                 JOIN AKUN a ON a.email=sw.email_akun
                 """
+    context = get_session_data(request)
     songs_with_artist = query(query_str)
     for swa in songs_with_artist:
         swa['id_lagu']=str(swa['id_lagu'])
-    return render(request, 'add-song.html', {'song_artist':songs_with_artist, 'id_user_playlist': id_user_playlist})
+    return render(request, 'add-song.html', {'song_artist':songs_with_artist, 'id_user_playlist': id_user_playlist,'context':context})
 
 def add_song_to_playlist(request, id_user_playlist, id_song):
     try:
@@ -167,10 +169,12 @@ def play_song_page(request, id_song):
                     WHERE s.id_konten='{id_song}'"""
     album = query(query_str)[0]['album']
 
+    context = get_session_data(request)
+
     return render(request, 'play-song.html', {'judul':judul,'genre':genre,'nama_artis':nama_artis,'nama_songwriter':nama_songwriter,
                                             'durasi':durasi,'tanggal_rilis':tanggal_rilis,'tahun':tahun,
                                             'total_play':total_play,'total_download':total_download,'album':album,
-                                            'email':email, 'id_song':id_song})
+                                            'email':email, 'id_song':id_song, 'context':context})
 
 def play_song(request, id_song):
     email = request.session['email']
@@ -183,6 +187,7 @@ def play_song(request, id_song):
 
 def add_song_to_any_playlist_page(request, id_song):
     email = request.session['email']
+    context = get_session_data(request)
     query_str = f"""SELECT k.judul AS judul, a.nama AS nama_artis 
                     FROM SONG s 
                     JOIN KONTEN k ON k.id=s.id_konten 
@@ -198,10 +203,11 @@ def add_song_to_any_playlist_page(request, id_song):
     for user_playlist in user_playlists:
         user_playlist['tanggal_dibuat'] = user_playlist['tanggal_dibuat'].strftime('%Y-%m-%d')
 
-    return render(request, 'add-song-any-playlist.html', {'judul': judul, 'artis': artis, 'playlists': user_playlists, 'id_song': id_song, 'email': email})
+    return render(request, 'add-song-any-playlist.html', {'judul': judul, 'artis': artis, 'playlists': user_playlists, 'id_song': id_song, 'email': email, 'context':context})
 
 def download_song_page(request, id_song):
     email = request.session['email']
+    context = get_session_data(request)
     query_str = f"""SELECT k.judul AS judul 
                     FROM SONG s 
                     JOIN KONTEN k ON k.id=s.id_konten 
@@ -217,7 +223,7 @@ def download_song_page(request, id_song):
     if "RAISE" in str(res):
         status="fail"
     print(res)
-    return render(request, "down-song.html", {'email':email, 'id_song':id_song, 'judul': judul, 'fail': status})
+    return render(request, "down-song.html", {'email':email, 'id_song':id_song, 'judul': judul, 'fail': status,'context':context})
 
 def add_playlist(request, judul, deskripsi):
     email = request.session['email']

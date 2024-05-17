@@ -6,8 +6,11 @@
 <title>Add Song to Playlist</title>
 </head>
 <body>
-    <div id="playlist"></div>
-    <div id="hidden-add-song" style="display: block;"></div>
+    {% include 'main/navbar.html' with context=context only  %}
+    <div class="margin-top: 40px;">
+        <div id="playlist"></div>
+        <div id="hidden-add-song" style="display: block;"></div>
+    </div>
 
     <script>
         function UUID(s){return s}

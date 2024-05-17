@@ -6,27 +6,30 @@
 <title>Play Song</title>
 </head>
     <body>
-        <div class="song-details" id="song-details">
-            <h1>Judul: Song1</h1>
-            <p>Genre: Genre1, Genre2</p>
-            <p>Artist: Artist1</p>
-            <p>Songwriter: Songwriter1, Songwriter2</p>
-            <p>Duration: 3 minutes</p>
-            <p>Release Date: 18/03/2024</p>
-            <p>Year: 2024</p>
-            <p>Total Plays: 0</p>
-            <p>Total Downloads: 0</p>
-            <p>Album: Album1</p>
-        </div>
-        <div class="controls">
-            <input type="range" id="song-progress" min="0" max="100" value="0">
-            <button onclick="playSong()">Play</button>
-            <button id="add-to-playlist">Add to Playlist</button>
-            <button id="down-song">Download</button>
-            <button onclick="goBack()">Back</button>
-        </div>
+        {% include 'main/navbar.html' with context=context only  %}
+        <div id="tab" class="margin-top: 40px;">
+            <div class="song-details" id="song-details">
+                <h1>Judul: Song1</h1>
+                <p>Genre: Genre1, Genre2</p>
+                <p>Artist: Artist1</p>
+                <p>Songwriter: Songwriter1, Songwriter2</p>
+                <p>Duration: 3 minutes</p>
+                <p>Release Date: 18/03/2024</p>
+                <p>Year: 2024</p>
+                <p>Total Plays: 0</p>
+                <p>Total Downloads: 0</p>
+                <p>Album: Album1</p>
+            </div>
+            <div class="controls">
+                <input type="range" id="song-progress" min="0" max="100" value="0">
+                <button onclick="playSong()">Play</button>
+                <button id="add-to-playlist">Add to Playlist</button>
+                <button id="down-song">Download</button>
+                <button onclick="goBack()">Back</button>
+            </div>
 
-        <div id="play-song-result"></div>
+            <div id="play-song-result"></div>
+        </div>
 
         <style>
             body {
@@ -40,6 +43,10 @@
             }
             button {
                 margin-right: 10px;
+            }
+
+            .tab{
+                margin-top: 40px;
             }
         </style>
 
