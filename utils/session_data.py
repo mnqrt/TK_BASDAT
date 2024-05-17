@@ -7,5 +7,7 @@ def get_session_data(request)->dict:
     context['is_premium'] = request.session.get('is_premium',False)
     context['is_podcaster'] = request.session.get('is_podcaster',False)
     context['is_artist'] = request.session.get('is_artist',False)
-    context['is_songwriter'] = request.session.get('is_songwritter',False)
+    context['is_songwriter'] = request.session.get('is_songwriter',False)
     return context
+
+
