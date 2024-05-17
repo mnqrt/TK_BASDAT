@@ -1,0 +1,12 @@
+{
+    "builds": [{
+        "src": "TK_BASDAT/wsgi.py",
+        "use": "@vercel/python"
+    }],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "TK_BASDAT/wsgi.py"
+        }
+    ]
+}

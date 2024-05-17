@@ -15,6 +15,5 @@ urlpatterns = [
     path('add-playlist/<str:email>/<str:judul>/<str:deskripsi>', add_playlist, name='add_playlist'),
     path('delete-playlist/<str:id_user_playlist>', delete_playlist, name='delete_playlist'),
     path('update-playlist/<str:id_user_playlist>/<str:title>/<str:description>', update_playlist, name='update_playlist'),
-    path('akun-play-user-playlist/<str:email>/<str:id_user_playlist>', akun_play_user_playlist, name='akun_play_user_playlist'),
-    path('show_song', show_song, name='show_song')
+    path('akun-play-user-playlist/<str:email>/<str:id_user_playlist>', akun_play_user_playlist, name='akun_play_user_playlist')
 ]

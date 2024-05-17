@@ -1,6 +1,9 @@
+import json
+import random
+import uuid
 from django.shortcuts import render,redirect
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse, QueryDict
+from django.http import HttpResponse, QueryDict, JsonResponse
 from utils.query import query
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -155,3 +158,62 @@ def search(request):
     
     return HttpResponse("search failed", status=400)
 
+def register_page(request):
+    return render(request, 'main/register.html')
+
+def register_label_page(request):
+    return render(request, 'main/register_label.html')
+
+def register_pengguna_page(request):
+    return render(request, 'main/register_pengguna.html')
+
+def register_label(request):
+    pass
+
+@csrf_exempt
+def register_pengguna(request):
+    data = json.loads(request.body)
+    email = data.get('email')
+    password = data.get('password')
+    nama = data.get('name')
+    gender = 0 if data.get('gender') == "female" else 1
+    tempat_lahir = data.get('birthplace')
+    tanggal_lahir = data.get('birthdate')
+    kota_asal = data.get('city')
+    role = data.get('role') 
+    is_verified = "TRUE" if role is not None else "FALSE"
+    print(data)
+
+    query_str = f"""INSERT INTO AKUN (nama, email, password, gender, tempat_lahir, tanggal_lahir, is_verified, kota_asal) VALUES 
+                    ('{nama}', '{email}', '{password}', {gender}, '{tempat_lahir}', '{tanggal_lahir}', {is_verified}, '{kota_asal}')"""
+    res = query(query_str)
+    if "RAISE" in str(res):
+        return JsonResponse({"gagal": "gagal"})
+
+    if role is not None:
+        if "Podcaster" in role:
+            query(f"INSERT INTO PODCASTER (email) VALUES ('{email}')")
+        if "Artist" in role:
+            random_uuid = str(uuid.uuid4())
+            query(f"INSERT INTO PEMILIK_HAK_CIPTA (id, rate_royalti) VALUES ('{random_uuid}', {random.randint(1, 1000)})")
+            query(f"INSERT INTO ARTIS (id, email_akun, id_pemilik_hak_cipta) VALUES ('{str(uuid.uuid4())}', '{email}', '{random_uuid}')")
+        if "Songwriter" in role:
+            random_uuid = str(uuid.uuid4())
+            query(f"INSERT INTO PEMILIK_HAK_CIPTA (id, rate_royalti) VALUES ('{random_uuid}', {random.randint(1, 1000)})")
+            query(f"INSERT INTO SONGWRITER (id, email_akun, id_pemilik_hak_cipta) VALUES ('{str(uuid.uuid4())}', '{email}', '{random_uuid}')")
+    return JsonResponse({"gagal": "tidak gagal"})
+
+@csrf_exempt
+def register_label(request):
+    data = json.loads(request.body)
+    email = data.get('email')
+    password = data.get('password')
+    nama = data.get('nama')
+    kontak = data.get('kontak')
+
+    random_uuid = str(uuid.uuid4())
+    query(f"INSERT INTO PEMILIK_HAK_CIPTA (id, rate_royalti) VALUES ('{random_uuid}', {random.randint(1, 1000)})")
+    res = query(f"""INSERT INTO LABEL (id, nama, email, password, kontak, id_pemilik_hak_cipta) VALUES ('{str(uuid.uuid4())}', '{nama}', '{email}', '{password}', '{kontak}', '{random_uuid}')""")
+    if "RAISE" in str(res):
+        return JsonResponse({"gagal": "gagal"})
+    return JsonResponse({"gagal": "tidak gagal"})
