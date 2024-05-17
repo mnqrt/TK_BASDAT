@@ -10,10 +10,77 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from utils.session_data import get_session_data
 
+MAP_GENDER = {0:'perempuan',1:'laki-laki'}
+MAP_ROLE = {True:'verified',False:'not verified'}
 def show_homepage(request):
     context = get_session_data(request)
-    print(context)
+
+    if not context['is_label']:
+        context['data'] = query(f"SELECT * FROM AKUN WHERE email = '{context['email']}'")
+        query_str = f"SELECT * FROM USER_PLAYLIST WHERE email_pembuat='{context['email']}'"
+        user_playlists = query(query_str)
+
+        for user_playlist in user_playlists:
+            user_playlist['tanggal_dibuat'] = user_playlist['tanggal_dibuat'].strftime('%Y-%m-%d')
+
+        context['playlist'] = user_playlists
+        context['playlist_length'] = len(context['playlist'])
+    else:
+        context['data'] = query(f"SELECT * FROM LABEL WHERE email = '{context['email']}'")
+
+
+    if context['is_artist']:
+        query_str = f"""
+                    SELECT K.judul
+                    FROM ARTIS A
+                    JOIN SONG S ON A.id = S.id_artist
+                    JOIN KONTEN K ON K.id = S.id_konten
+                    WHERE A.email_akun = '{context['email']}';
+                    """
+        context['song']=  query(query_str)  
+        context['song_length'] = len(context['song'])
+
+    if context['is_songwriter']:
+        query_str = f"""
+                    SELECT K.judul
+                    FROM SONGWRITER S
+                    JOIN SONGWRITER_WRITE_SONG SWS ON S.id = SWS.id_songwriter
+                    JOIN KONTEN K ON K.id = SWS.id_song
+                    WHERE S.email_akun = '{context['email']}'
+                    """
+        context['song']=  query(query_str)  
+        context['song_length'] = len(context['song'])
+
+    if context['is_podcaster']:
+        query_str = f"""
+                    SELECT K.judul
+                    FROM PODCASTER P
+                    JOIN PODCAST J ON J.email_podcaster = P.email
+                    JOIN KONTEN K ON K.id = J.id_konten
+                    WHERE P.email = '{context['email']}';
+                    """
+        context['podcast']=  query(query_str)  
+        context['podcast_length'] = len(context['podcast'])
+
+    if context['is_label']:
+        query_str = f"""
+                    SELECT A.judul
+                    FROM LABEL L 
+                    JOIN ALBUM A ON A.id_label = L.id
+                    WHERE L.email = '{context['email']}'; 
+                    """
+        context['album']=  query(query_str)  
+        context['album_length'] = len(context['album'])
+
+   
+
+    if context['data'] != []:
+        context['data'] = context['data'].pop()
+        if not context['is_label']:
+            context['data']['gender'] = MAP_GENDER[context['data']['gender']]
+            context['data']['is_verified'] = MAP_ROLE[context['data']['is_verified']]
     return render(request, 'main/index.html',{'context':context})
+
 
 def login_page(request):
     return render(request, 'main/login.html')
@@ -92,9 +159,7 @@ def authenticate_user(request):
         if query(query_is_label).pop().get('case')== 1:
             request.session["is_label"] = True
         else:
-       
             if query(query_is_user).pop().get('case')== 1:
-
                 if query(query_is_premium).pop().get('case')==1:
                     request.session["is_premium"] = True
                 
