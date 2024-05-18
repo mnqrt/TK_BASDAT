@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Lagu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #151829;
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1.25rem;
+            text-align: center;
+            font-family: serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #151829;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #9e60d1;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        tr:nth-child(even) {
+            background-color: #382e47;
+        }
+
+        button {
+            background-color: #9e60d1;
+            color: #ffffff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #b17bc9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Daftar Lagu - Album</h2>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Judul</th>
+                        <th>Durasi</th>
+                        <th>Total Play</th>
+                        <th>Total Download</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records_song %}
+                    <tr>
+                        <td>{{ record.1.judul }}</td>
+                        <td>{{ record.1.durasi }}</td>
+                        <td>{{ record.0.total_play }}</td>
+                        <td>{{ record.0.total_download }}</td>
+                        <td>
+                            <button>Detail</button>
+                            <a href="{% url 'kelola_album:delete_lagu' %}?id_lagu={{ record.0.id_konten }}">
+                                <button>Hapus</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
