@@ -25,22 +25,24 @@
             {% endif %}
 
             {% if context.is_artist or context.is_songwriter %}
-            <li><a href="#">Kelola Album & Songs</a></li>
+            <li><a href="{% url 'kelola_album:list_album_edit' %}">Kelola Album & Songs</a></li>
             {% endif %}
+            
 
-            {% if context.is_label %}
-            <li><a href="#">Kelola Album</a></li>
-            {% endif %}
-
-            {% if context.is_label or context.is_artist or context.is_songwriter %}
-            <li><a href="#">Cek Royalti</a></li>
+            {% if context.is_artist or context.is_songwriter %}
+            <li><a href="{% url 'cek_royalti:cek_royalti' %}">Cek Royalti</a></li>
             {% endif %}
 
             {% endif %}
             <li><a href="{% url 'main:logout' %}">Logout</a></li>
         {% endif %}
-    </ul>
+        
+        {% if context.is_label %}
+        <li><a href="{% url 'kelola_album:list_album' %}">Kelola Album</a></li>
+        <li><a href="{% url 'cek_royalti:cek_royalti' %}">Cek Royalti</a></li>
+        {% endif %}
     
+    </ul>
 </nav>
 
 

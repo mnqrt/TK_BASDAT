@@ -156,8 +156,33 @@ def authenticate_user(request):
                             END 
                             """
         
+        query_id_label = f"""
+                        SELECT L.id_pemilik_hak_cipta
+                        FROM label L, pemilik_hak_cipta P
+                        WHERE L.id_pemilik_hak_cipta = P.id AND L.email='{email}' 
+                        """
+
+        query_id_songwriter = f"""
+                        SELECT S.id_pemilik_hak_cipta
+                        FROM songwriter S, akun AK, pemilik_hak_cipta P
+                        WHERE S.id_pemilik_hak_cipta = P.id AND AK.email='{email}' AND AK.email=S.email_akun
+                        """
+
+        
+        query_id_artis = f"""
+                        SELECT A.id_pemilik_hak_cipta
+                        FROM artis A, akun AK, pemilik_hak_cipta P
+                        WHERE A.id_pemilik_hak_cipta = P.id AND AK.email='{email}' AND AK.email=A.email_akun
+                        """
+
+
         if query(query_is_label).pop().get('case')== 1:
             request.session["is_label"] = True
+            result_label = query(query_id_label)
+            request.session["id_pemilik_cipta_label"] = str(result_label[0]['id_pemilik_hak_cipta'])
+        
+
+
         else:
             if query(query_is_user).pop().get('case')== 1:
                 if query(query_is_premium).pop().get('case')==1:
@@ -165,14 +190,18 @@ def authenticate_user(request):
                 
                 if query(query_is_artist).pop().get('case')==1:
                     request.session["is_artist"] = True
-                
+                    result_artis = query(query_id_artis)
+                    request.session["id_pemilik_cipta_artist"] = str(result_artis[0]['id_pemilik_hak_cipta'])
+
                 if query(query_is_songwriter).pop().get('case')==1:
                     request.session["is_songwriter"] = True
-                
+                    result_songwriter = query(query_id_songwriter)
+                    request.session["id_pemilik_cipta_songwriter"] = str(result_songwriter[0]['id_pemilik_hak_cipta'])
+
                 if query(query_is_podcaster).pop().get('case')==1:
                     request.session["is_podcaster"] = True
             else:
-
+                print(5555)
                 messages.error(request, "Email atau password salah!")
                 return HttpResponse("Authentication failed", status=400)
             

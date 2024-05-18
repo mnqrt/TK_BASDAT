@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'playlist',
     'subscription',
     'download',
-    'main'
+    'main',
+    'cek_royalti',
+    'kelola_album'
 ]
 
 MIDDLEWARE = [
