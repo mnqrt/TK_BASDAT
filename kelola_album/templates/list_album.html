@@ -4,17 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List Album - Marmut</title>
-    <!-- <style>
+    <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #151829;
-            color: #ffffff;
+            color: #000000;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: #151829;
             border-radius: 5px;
             overflow: hidden;
         }
@@ -25,17 +23,17 @@
         }
 
         th {
-            background-color: #9e60d1;
+            background-color: #7f7f7f;
             font-weight: bold;
             text-transform: uppercase;
         }
 
         tr:nth-child(even) {
-            background-color: #382e47;
+            background-color: #000000;
         }
 
         button {
-            background-color: #9e60d1;
+            background-color: #7f7f7f;
             color: #ffffff;
             padding: 5px 10px;
             border: none;
@@ -44,9 +42,9 @@
         }
 
         button:hover {
-            background-color: #b17bc9;
+            background-color: #464646;
         }
-    </style> -->
+    </style>
 </head>
 
 <body>
@@ -65,14 +63,14 @@
             <tbody>
                 {% for record in records_album %}
                 <tr>
-                    <td>{{ record.nama }}</td>
-                    <td>{{ record.email }}</td>
-                    <td>{{ record.kontak }}</td>
+                    <td>{{ record.judul }}</td>
+                    <td>{{ record.jumlah_lagu }}</td>
+                    <td>{{ record.total_durasi }}</td>
                     <td>
-                        <a href="{% url 'kelola_album:list_song' %}?album_id={{ record.0 }}">
+                        <a href="{% url 'kelola_album:list_song' %}?album_id={{ record.id }}">
                             <button>Lihat Daftar Lagu</button>
                         </a>
-                        <a href="{#}">
+                        <a href="{% url 'kelola_album:delete_lagu' %}?album_id={{ record.id }}">
                             <button>Hapus</button>
                         </a>
                     </td>

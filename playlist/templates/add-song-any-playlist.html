@@ -6,10 +6,14 @@
 <title>Add Song to Playlist</title>
 </head>
 <body>
-    <div id="playlist"></div>
-    <div id="hidden-add-song" style="display: block;"></div>
+    {% include 'main/navbar.html' with context=context only  %}
+    <div class="margin-top: 40px;">
+        <div id="playlist"></div>
+        <div id="hidden-add-song" style="display: block;"></div>
+    </div>
 
     <script>
+        function UUID(s){return s}
         const titleData = `${{ judul|safe }}`.slice(1)
         const artistData = `${{ artis|safe }}`.slice(1)
         const playlistsData = {{ playlists|safe }}
@@ -43,13 +47,13 @@
             if (res.ok) {
                 addSongResponseDiv.innerHTML = `<div>Berhasil menambahkan Lagu dengan judul ‘${titleData}’ ke ‘${selectPlaylistDropdown.value}’!</div>
                     <a href="/playlist/show-one-by-id/${selectPlaylistDropdown.value}">[KE PLAYLIST]</a>
-                    <a href="/playlist/play-song-page/${emailData}/${idSongData}">[KEMBALI]</a>
+                    <a href="/playlist/play-song-page/${idSongData}">[KEMBALI]</a>
                 `
                 return
             }
             addSongResponseDiv.innerHTML = `<div>Lagu dengan judul ‘${titleData}’ sudah ditambahkan di ‘${selectPlaylistDropdown.value}’!</div>
                     <a href="/playlist/show-one-by-id/${selectPlaylistDropdown.value}">[KE PLAYLIST]</a>
-                    <a href="/playlist/play-song-page/${emailData}/${idSongData}">[KEMBALI]</a>
+                    <a href="/playlist/play-song-page/${idSongData}">[KEMBALI]</a>
                 `
         }
         

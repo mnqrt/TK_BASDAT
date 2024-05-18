@@ -7,35 +7,39 @@
     <title>CRUD Playlist Management System</title>
 </head>
 <body>
-    <h1>User Playlists</h1>
+    {% include 'main/navbar.html' with context=context only  %}
+    <div>
+        <h1>User Playlists</h1>
+        <h1>User Playlists</h1>
 
-    <div id="playlists"></div>
+        <div id="playlists"></div>
 
-    <div id="create-playlist-form" style="display: none;">
-        <h2>Tambah Playlist</h2>
-        <form id="playlist-form">
-            <label for="playlist-title">Judul:</label>
-            <input type="text" id="playlist-title" name="playlist-title" placeholder="Masukkan judul playlist">
-            <br>
-            <label for="playlist-description">Deskripsi:</label>
-            <textarea id="playlist-description" name="playlist-description" placeholder="Masukkan deskripsi playlist"></textarea>
-            <br>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+        <div id="create-playlist-form" style="display: none;">
+            <h2>Tambah Playlist</h2>
+            <form id="playlist-form">
+                <label for="playlist-title">Judul:</label>
+                <input type="text" id="playlist-title" name="playlist-title" placeholder="Masukkan judul playlist">
+                <br>
+                <label for="playlist-description">Deskripsi:</label>
+                <textarea id="playlist-description" name="playlist-description" placeholder="Masukkan deskripsi playlist"></textarea>
+                <br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
 
-    <div id="update-playlist-form" style="display: none;">
-        <h2>Ubah Playlist</h2>
-        <form id="update-form">
-            <input type="hidden" id="update-playlist-id">
-            <label for="update-playlist-title">Judul:</label>
-            <input type="text" id="update-playlist-title" name="update-playlist-title" placeholder="Masukkan judul playlist">
-            <br>
-            <label for="update-playlist-description">Deskripsi:</label>
-            <textarea id="update-playlist-description" name="update-playlist-description" placeholder="Masukkan deskripsi playlist"></textarea>
-            <br>
-            <button type="submit">Update</button>
-        </form>
+        <div id="update-playlist-form" style="display: none;">
+            <h2>Ubah Playlist</h2>
+            <form id="update-form">
+                <input type="hidden" id="update-playlist-id">
+                <label for="update-playlist-title">Judul:</label>
+                <input type="text" id="update-playlist-title" name="update-playlist-title" placeholder="Masukkan judul playlist">
+                <br>
+                <label for="update-playlist-description">Deskripsi:</label>
+                <textarea id="update-playlist-description" name="update-playlist-description" placeholder="Masukkan deskripsi playlist"></textarea>
+                <br>
+                <button type="submit">Update</button>
+            </form>
+        </div>
     </div>
 
     <style>
@@ -77,6 +81,7 @@
     </style>
 
     <script>
+        function UUID(s){return s}
         function showCreatePlaylistForm() {
             document.getElementById('playlists').style.display = 'none';
             document.getElementById('create-playlist-form').style.display = 'block';
@@ -133,7 +138,7 @@
                     var deletePlaylist = document.getElementById(`hapus-${playlist.id_user_playlist}`)
                     deletePlaylist.addEventListener('click', async () => {
                         console.log(`hapus-${playlist.id_user_playlist}`)
-                        await fetch(`http://127.0.0.1:8000/playlist/delete-playlist/${playlist.id_user_playlist}`)
+                        await fetch(`/playlist/delete-playlist/${playlist.id_user_playlist}`)
                         window.location.reload();
                     })
                 }
@@ -145,8 +150,8 @@
             event.preventDefault();
             const title = document.getElementById('playlist-title').value;
             const description = document.getElementById('playlist-description').value;
-            console.log(`http://127.0.0.1:8000/playlist/add-playlist/${emailData}/${title}/${description}`)
-            const res = await fetch(`http://127.0.0.1:8000/playlist/add-playlist/${emailData}/${title}/${description}`)
+            console.log(`/playlist/add-playlist/${title}/${description}`)
+            const res = await fetch(`/playlist/add-playlist/${title}/${description}`)
             window.location.reload();
         });
 
@@ -156,7 +161,7 @@
             const id_user_playlist = document.getElementById('update-playlist-id').value;
             const title = document.getElementById('update-playlist-title').value;
             const description = document.getElementById('update-playlist-description').value;
-            await fetch(`http://127.0.0.1:8000/playlist/update-playlist/${id_user_playlist}/${title}/${description}`);
+            await fetch(`/playlist/update-playlist/${id_user_playlist}/${title}/${description}`);
             window.location.reload();
         });
 

@@ -9,7 +9,95 @@
     {% include 'main/navbar.html' %}
     <div class="content">
         <h1>Marmut</h1>
+
+        {% if context.is_active %}
+        <h2>DASHBOARD </h2>
+
+        
+        <div>
+            <h3>Informasi Pengguna</h3>
+            <ul>
+                <li><strong>Nama:</strong>{{ context.data.nama }}</li>
+                <li><strong>Email:</strong> {{ context.email }} </li>
+                {% if context.is_label %}
+                <li><strong>Kontak:</strong> {{ context.data.kontak }} </li>
+                {% else %}
+                <li><strong>Kota Asal:</strong> {{ context.data.kota_asal }}</li>
+                <li><strong>Gender:</strong> {{ context.data.gender }}</li>
+                <li><strong>Tempat Lahir:</strong> {{ context.data.tempat_lahir }}</li>
+                <li><strong>Tanggal Lahir:</strong>{{ context.data.tanggal_lahir }}</li>
+                <li><strong>Role:</strong> {{ context.data.is_verified }}</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        {% if not context.is_label %}
+        <div>
+            <h2>Pengguna </h2>
+            
+            {% if context.playlist_length != 0 %}
+            <p>Daftar playlist:</p>
+            <ul>
+                {% for playlist in context.playlist %}
+                <li>{{ playlist.judul }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Belum Memiliki Playlist</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        
+        {% if context.is_artist or context.is_songwriter %}
+        <div>
+            <h2>Artist/Songwriter</h2>
+            {% if context.song_length != 0 %}
+            <p>Daftar Lagu:</p>
+            <ul>
+                {% for song in context.song %}
+                <li>{{ song.judul }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Belum Memiliki Lagu</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if context.is_podcaster %}
+        <div>
+            <h2>Podcaster</h2>
+            {% if context.podcast_length != 0 %}
+            <p>Daftar Podcast:</p>
+            <ul>
+                {% for pod in context.podcast %}
+                <li>{{ pod.judul }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Belum Memiliki Podcast</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if context.is_label %}
+        <div>
+            <h2>Label</h2>
+            {% if context.album_length != 0 %}
+            <p>Daftar Album:</p>
+            <ul>
+                {% for album in context.album %}
+                <li>{{ album.judul }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Belum MemilikiAlbum</p>
+            {% endif %}
+        </div>
+        {% endif %}
     </div>
+    {% endif %}
 </body>
 </html>
 

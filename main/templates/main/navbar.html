@@ -2,7 +2,7 @@
     <ul>
         {% if not context.is_active %}
         <li><a href="{% url 'main:login' %}">Login</a></li>
-        <li><a href="#">Register</a></li>
+        <li><a href="/register">Register</a></li>
         {% elif context.is_active %}
             <li><a href="{% url 'main:show_homepage' %}">Dashboard</a></li>
             {% if not context.is_label %}
@@ -13,7 +13,7 @@
                     <button type="submit">Search</button>
                 </form>
             </li>
-            <li><a href="#">Kelola Playlist</a></li>
+            <li><a href="/playlist/show-all-by-username">Kelola Playlist</a></li>
             <li><a href="{% url 'subscription:show_offers' %}">Langganan Paket</a></li>
 
             {% if context.is_premium %}
@@ -27,20 +27,22 @@
             {% if context.is_artist or context.is_songwriter %}
             <li><a href="{% url 'kelola_album:list_album_edit' %}">Kelola Album & Songs</a></li>
             {% endif %}
+            
 
-            {% if context.is_label %}
-            <li><a href="% url 'kelola_album:list_album' %">Kelola Album</a></li>
-            {% endif %}
-
-            {% if context.is_label or context.is_artist or context.is_songwriter %}
+            {% if context.is_artist or context.is_songwriter %}
             <li><a href="{% url 'cek_royalti:cek_royalti' %}">Cek Royalti</a></li>
             {% endif %}
 
             {% endif %}
             <li><a href="{% url 'main:logout' %}">Logout</a></li>
         {% endif %}
-    </ul>
+        
+        {% if context.is_label %}
+        <li><a href="{% url 'kelola_album:list_album' %}">Kelola Album</a></li>
+        <li><a href="{% url 'cek_royalti:cek_royalti' %}">Cek Royalti</a></li>
+        {% endif %}
     
+    </ul>
 </nav>
 
 

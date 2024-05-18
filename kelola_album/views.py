@@ -90,21 +90,34 @@ def list_album(request):
     label = get_label_by_email(email)
 
     if label:
-        id_label = label[0]
+        id_label = str(label['id'])
         records_album = get_albums_by_label(id_label)
+        j = []
+        for i in records_album:
+            {
+                'id': str(i['id']),
+                'jumlah_lagu': i['jumlah_lagu'],
+                'total_durasi': i['total_durasi']
+            }
+            print(i)
+            j.append(i)
         context = {
             'role': 'label',
             'status': 'success',
-            'id': label[0],
-            'nama': label[1],
-            'email': label[2],
-            'kontak': label[4],
-            'id_pemilik_hak_cipta': label[5],
-            'records_album': records_album,
+            'id': str(label['id']),
+            'nama': label['nama'],
+            'email': label['email'],
+            'kontak': label['kontak'],
+            'id_pemilik_hak_cipta': str(label['id_pemilik_hak_cipta']),
+            'records_album': j,
+
         }
 
+        # print(records_album)
+        # print(context)
+
         response = render(request, 'list_album.html', context)
-        set_label_cookies(response, label)
+        # set_label_cookies(response, label)
         return response
 
     return render(request, 'list_album.html')
@@ -277,11 +290,12 @@ def get_albums_by_label(id_label):
     return records_album
 
 
-def set_label_cookies(response, label):
-    response.session['role'] = 'label'
-    response.session['email'] = label[2]
-    response.session['id'] = label[0]
-    response.session['id_pemilik_cipta_label'] = label[5]
+# def set_label_cookies(response, label):
+#     print()
+#     response.session['role'] = 'label'
+#     response.session['email'] = label['email']
+#     response.session['id'] = str(label['id'])
+#     response.session['id_pemilik_cipta_label'] = str(label['id_pemilik_cipta_label'])
 
 def get_album_ids_by_artist(id_artist):
     list_album_id_artist = query(f'SELECT DISTINCT id_album FROM SONG WHERE id_artist = \'{id_artist[0]['id']}\'')
