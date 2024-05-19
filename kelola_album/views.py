@@ -4,6 +4,8 @@ from utils.query import *
 from datetime import datetime
 from django.urls import reverse
 
+from utils.session_data import get_session_data
+
 def create_album(request):
     if request.method == 'POST':
         judul = request.POST.get('judul')
@@ -15,8 +17,11 @@ def create_album(request):
         url += f'?album_id={id_album}'
         return redirect(url)
     
+    contextt = get_session_data(request)
     list_label = query(f'select id, nama from label')
-    context = {'list_label': list_label}
+    context = {'list_label': list_label,
+               'context': contextt
+               }
     return render(request, 'create_album.html', context)
 
 
@@ -29,6 +34,7 @@ def create_lagu(request):
     album_id = request.GET.get('album_id')
     nama_artist = ""
     nama_songwriter = ""
+    contextt = get_session_data(request)
 
     if (isArtist):
         isArtist = 'True'
@@ -79,7 +85,8 @@ def create_lagu(request):
         'judul_album': judul_album,
         'nama_artist': nama_artist,
         'nama_songwriter': nama_songwriter,
-        'labels': list_label
+        'labels': list_label,
+        'context': contextt
     }
 
 
@@ -88,6 +95,8 @@ def create_lagu(request):
 def list_album(request):
     email = request.session.get('email')
     label = get_label_by_email(email)
+    contextt = get_session_data(request)
+
 
     if label:
         id_label = str(label['id'])
@@ -110,6 +119,7 @@ def list_album(request):
             'kontak': label['kontak'],
             'id_pemilik_hak_cipta': str(label['id_pemilik_hak_cipta']),
             'records_album': j,
+            'context': contextt
 
         }
 
@@ -130,6 +140,8 @@ def list_album_edit(request):
     records_album_songwriter = []
     artistHasAlbum = False
     songwriterHasAlbum = False
+    contextt = get_session_data(request)
+
 
     if isArtist == True:
         isArtist = "True"
@@ -157,6 +169,7 @@ def list_album_edit(request):
         'songwriterHasAlbum': songwriterHasAlbum,
         'records_album_artist': records_album_artist,
         'records_album_songwriter': records_album_songwriter,
+        'context': contextt
     }
 
     response = render(request, 'list_album_edit.html', context)
@@ -165,10 +178,12 @@ def list_album_edit(request):
 def list_song(request):
     album_id = request.GET.get('album_id')
     records_song = get_song_records_by_album(album_id)
+    contextt = get_session_data(request)
 
     context = {
         'status': 'success',
         'records_song': records_song,
+        'context': contextt
     }
     response = render(request, 'list_lagu.html', context)
     return response
