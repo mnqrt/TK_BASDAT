@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'download',
     'main',
     'cek_royalti',
-    'kelola_album'
+    'kelola_album',
     'podcast',
     'chart',
     'kelola_podcast',
