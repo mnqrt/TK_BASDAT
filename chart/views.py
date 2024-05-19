@@ -1,10 +1,11 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.db import connection
+from utils.query import query
 
 def chart_list(request):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT id, type FROM chart")
+        query("SELECT id, type FROM chart")
         charts = cursor.fetchall()
 
     context = {
@@ -14,12 +15,12 @@ def chart_list(request):
 
 def chart_detail(request, chart_id):
     with connection.cursor() as cursor:
-        cursor.execute("""
+        query("""
             SELECT type FROM chart WHERE id = %s
         """, [chart_id])
         chart = cursor.fetchone()
         
-        cursor.execute("""
+        query("""
             SELECT title, artist, release_date, total_plays 
             FROM song 
             WHERE chart_id = %s 
@@ -36,7 +37,7 @@ def chart_detail(request, chart_id):
 
 def get_chart_detail_data(request, chart_id):
     with connection.cursor() as cursor:
-        cursor.execute("""
+        query("""
             SELECT title, artist, release_date, total_plays 
             FROM song 
             WHERE chart_id = %s 
