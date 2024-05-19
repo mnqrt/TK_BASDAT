@@ -6,7 +6,7 @@
         {% elif context.is_active %}
             <li><a href="{% url 'main:show_homepage' %}">Dashboard</a></li>
             {% if not context.is_label %}
-            <li><a href="#">Chart</a></li>
+            <li><a href="{% url 'chart:list_chart' %}">Chart</a></li>
             <li>
                 <form action="/search" method="GET"> 
                     <input type="text" name="query" placeholder="Search..."> 
