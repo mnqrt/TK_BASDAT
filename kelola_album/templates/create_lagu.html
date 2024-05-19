@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Create Song</title>
+<style>
+    body {
+        font-family: sans-serif;
+    }
+
+    .container {
+        /* display: flex; */
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .form-container {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    h2 {
+        color: rgb(0, 0, 0);
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        font-family: serif;
+        margin-bottom: 20px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        color: rgb(0, 0, 0);
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    select {
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #000000;
+        background-color: #ffffff;
+        margin-bottom: 10px;
+    }
+
+    input[type="checkbox"] {
+        margin-right: 5px;
+    }
+
+    button[type="submit"] {
+        padding: 8px 16px;
+        background-color: #8a8a8a;
+        color: white;
+        border-radius: 4px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="form-container">
+        <h2>Create Lagu</h2>
+        <form class="form" method="POST" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <div>
+                <label for="album">Album:</label>
+                <label for="album">{{ judul_album.0.judul }}</label>
+            </div>
+            <div>
+                <label for="judul">Judul</label>
+                <input type="text" id="judul" name="judul" required>
+            </div>
+            {% if isArtist == "True" %}
+            <div>
+                <label for="artist">Artist:</label>
+                <label for="artist">{{ nama_artist.0.nama }}</label>
+            </div>
+            {% else %}
+            <div>
+                <label for="artist">Artist</label>
+                <select id="artist" name="artist" required>
+                    <option value="">Select Artist</option>
+                    {% for record in records_artist %}
+                    <option value="{{ record.0.id }}">{{ record.0.nama.nama }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+            <div>
+                <label for="songwriter">Songwriters</label><br>
+                {% for record in records_songwriter %}
+                {% if record.email_akun == request.session.email %}
+                <input type="checkbox" id="songwriter_{{ record.id }}" name="songwriter[]" value="{{ record.id }}" checked disabled>
+                <input type="hidden" name="songwriter[]" value="{{ record.id }}">
+                <label for="songwriter_{{ record.id }}">{{ record.nama.nama }}</label><br>
+                {% else %}
+                <input type="checkbox" id="songwriter_{{ record.id }}" name="songwriter[]" value="{{ record.id }}">
+                <label for="songwriter_{{ record.id }}">{{ record.nama.nama }}</label><br>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div>
+                <label for="genre">Genres</label><br>
+                {% for record in records_genre %}
+                <input type="checkbox" id="genre_{{ record.genre }}" name="genre[]" value="{{ record.genre }}">
+                <label for="genre_{{ record.genre }}">{{ record.genre }}</label><br>
+                {% endfor %}
+            </div>
+            <div>
+                <label for="durasi">Durasi</label>
+                <input type="text" id="durasi" name="durasi" required>
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+    function validateForm() {
+        var songwriters = document.querySelectorAll('input[name="songwriter[]"]:checked');
+        var genres = document.querySelectorAll('input[name="genre[]"]:checked');
+
+        if (songwriters.length === 0) {
+            alert("Please choose at least one songwriter.");
+            return false;
+        }
+
+        if (genres.length === 0) {
+            alert("Please choose at least one genre.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+</html>

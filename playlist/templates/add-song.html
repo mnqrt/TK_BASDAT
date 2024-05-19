@@ -7,15 +7,19 @@
     <title>CRUD Playlist Management System</title>
 </head>
 <body>
-    <h1>Tambahkan lagu</h1>
-    <label for="songs">Tambahkan lagu:</label>
+    {% include 'main/navbar.html' with context=context only  %}
+    <div class="margin-top: 40px;">
+        <h1>Tambahkan lagu</h1>
+        <label for="songs">Tambahkan lagu:</label>
 
-    <select name="songs" id="song-dropdown"></select>
+        <select name="songs" id="song-dropdown"></select>
 
-    <button onclick="addSong()" id="button-add">Add Song</button>
-    <div id="fail"></div>
+        <button onclick="addSong()" id="button-add">Add Song</button>
+        <div id="fail"></div>
+    </div>
 
     <script>
+        function UUID(s){return s}
         var songArtistData = {{ song_artist|safe }}
         var idUserPlayListData = `${{ id_user_playlist|safe }}`.slice(1)
         console.log(songArtistData)
