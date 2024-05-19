@@ -37,22 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-<<<<<<< HEAD
-    'podcast',
-    'chart',
-    # 'kelola_podcast',
-    # 'playlist',
-    # 'subscription',
-    # 'download',
-    # 'main'
-=======
     'playlist',
     'subscription',
     'download',
     'main',
     'cek_royalti',
     'kelola_album'
->>>>>>> d30811e85d318aafbf1b5ecf992cd9124d201be5
+    'podcast',
+    'chart',
+    'kelola_podcast',
 ]
 
 MIDDLEWARE = [
