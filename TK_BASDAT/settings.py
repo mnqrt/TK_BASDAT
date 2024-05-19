@@ -37,12 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'playlist',
-    'subscription',
-    'download',
-    'main',
-    'cek_royalti',
-    'kelola_album'
+    # 'playlist',
+    # 'subscription',
+    # 'download',
+    # 'main',
+    # 'cek_royalti',
+    # 'kelola_album'
     'podcast',
     'chart',
     'kelola_podcast',
