@@ -92,7 +92,7 @@
                 <select id="artist" name="artist" required>
                     <option value="">Select Artist</option>
                     {% for record in records_artist %}
-                    <option value="{{ record.0.id }}">{{ record.0.nama.nama }}</option>
+                    <option value="{{ record.id }}">{{ record.nama }}</option>
                     {% endfor %}
                 </select>
             </div>
