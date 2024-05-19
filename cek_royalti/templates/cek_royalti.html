@@ -17,6 +17,8 @@
     </style>
 </head>
 <body>
+    {% include 'main/navbar.html' with context=context only  %}
+    <div class="content">
     <table>
         <caption>LIST ROYALTI</caption>
         <thead>
@@ -86,5 +88,6 @@
             {% endif %}
         </tbody>
     </table>
+    </div>
 </body>
 </html>

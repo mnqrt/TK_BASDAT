@@ -1,6 +1,7 @@
 import uuid
 from django.shortcuts import render
 from utils.query import *
+from utils.session_data import get_session_data
 
 def get_royalty_records(id_pemilik_hak_cipta):
     response = query(
@@ -20,6 +21,7 @@ def cek_royalti(request):
     role = request.session.get('is_label')
     is_artist = request.session.get('is_artist') == True
     is_songwriter = request.session.get('is_songwriter') == True
+    contextt = get_session_data(request)
 
     records_royalti_label = []
     records_royalti_artist = []
@@ -48,6 +50,7 @@ def cek_royalti(request):
         'records_royalti_label': records_royalti_label,
         'records_royalti_artist': records_royalti_artist,
         'records_royalti_songwriter': records_royalti_songwriter,
+        'context': contextt
     }
     response = render(request, 'cek_royalti.html', context)
     
