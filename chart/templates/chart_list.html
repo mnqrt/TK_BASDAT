@@ -45,8 +45,8 @@
       <tbody>
         {% for chart in charts %}
         <tr>
-          <td>{{ chart.type }}</td>
-          <td><button onclick="viewChartDetail('{{ chart.id }}')">Lihat Daftar Lagu</button></td>
+          <td>{{ chart.tipe }}</td>
+          <td><button onclick="viewChartDetail('{{ chart.id_playlist }}')">Lihat Daftar Lagu</button></td>
         </tr>
         {% endfor %}
       </tbody>
@@ -58,12 +58,15 @@
 
   <script>
     function viewChartDetail(chartId) {
-      window.location.href = `/charts/${chartId}/`;
+      const url = `{% url 'chart:detail_chart' 0 %}`.replace('0', chartId);
+      window.location.href = url;
+    
     }
 
     function goBack() {
       window.history.back();
     }
+    
   </script>
 </body>
 </html>

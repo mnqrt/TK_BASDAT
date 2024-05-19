@@ -47,11 +47,11 @@
       <tbody>
         {% for song in songs %}
         <tr>
-          <td>{{ song.title }}</td>
-          <td>{{ song.artist }}</td>
-          <td>{{ song.release_date }}</td>
-          <td>{{ song.total_plays }}</td>
-          <td><button onclick="viewSongDetail('{{ song.title }}')">Lihat</button></td>
+          <td>{{ song.judul }}</td>
+          <td>{{ song.nama }}</td>
+          <td>{{ song.tanggal_rilis }}</td>
+          <td>{{ song.total_play }}</td>
+          <td><button onclick="openSong('{{ song.id }}')">Lihat</button></td>
         </tr>
         {% endfor %}
       </tbody>
@@ -66,6 +66,11 @@
     function goBack() {
       window.history.back();
     }
+
+    function openSong(id) {
+            const url = `{% url 'play_song_page' 0 %}`.replace('0', id);
+            window.location.href = url;
+        }
   </script>
 </body>
 </html>
