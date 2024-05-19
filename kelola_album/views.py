@@ -73,13 +73,18 @@ def create_lagu(request):
     nama_artist = get_artist_name(isArtist, idArtist)
     nama_songwriter = get_songwriter_name(isSongwriter, idSongwriter)
     list_label = query(f'select id, nama from label')
+    j=[]
+    for record in records_artist:
+        new_record = {"id": str(record.get("id", "")), "nama": record.get("nama", {}).get("nama", "")}
+        j.append(new_record)
+
 
     context = {
         'isArtist': isArtist,
         'isSongwriter': isSongwriter,
         'idArtist': idArtist,
         'idSongwriter': idSongwriter,
-        'records_artist': records_artist,
+        'records_artist': j,
         'records_songwriter': records_songwriter,
         'records_genre': records_genre,
         'judul_album': judul_album,
@@ -88,6 +93,8 @@ def create_lagu(request):
         'labels': list_label,
         'context': contextt
     }
+
+    print(j)
 
 
     return render(request, 'create_lagu.html', context)
@@ -108,7 +115,6 @@ def list_album(request):
                 'jumlah_lagu': i['jumlah_lagu'],
                 'total_durasi': i['total_durasi']
             }
-            print(i)
             j.append(i)
         context = {
             'role': 'label',
@@ -196,7 +202,6 @@ def delete_album(request):
 
 def delete_lagu(request):
     id_lagu = request.GET.get('id_lagu')
-    print(id_lagu)
     query(f'delete from song where id_konten = \'{id_lagu}\'')
     connection.commit()
     return redirect('kelola_album:list_album_edit')
@@ -210,6 +215,7 @@ def get_artist_details(request, isArtist, idArtist):
         id_artist = request.POST.get('artist')
         response =  query(f'select id_pemilik_hak_cipta from artis where id = \'{id_artist}\'')
         if response:  # Check if the query returned any results
+            print(response)
             id_pemilik_hak_cipta_artist = response[0]  # Get the first result
         else:
             id_pemilik_hak_cipta_artist = None  # No results, set to None or a default value
@@ -220,7 +226,7 @@ def insert_konten(id_song, judul, date_now, year_now, durasi):
     query(f'insert into konten values (\'{id_song}\', \'{judul}\', \'{date_now}\', \'{year_now}\', \'{durasi}\')')
 
 def insert_song(id_song, id_artist, album_id):
-    res = query(f"insert into song values (\'{id_song}\', \'{id_artist[0]['id']}\', \'{album_id}\', 0, 0)")
+    res = query(f"insert into song values (\'{id_song}\', \'{id_artist}\', \'{album_id}\', 0, 0)")
     
 
 def insert_songwriter_write_song(id_song, songwriters):
