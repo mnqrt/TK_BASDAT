@@ -68,7 +68,7 @@
         <h4>Judul: ${userPlaylistData.judul}</h4>
         <h4>Nama: ${namaData.nama}</h4>
         <h4>Jumlah Lagu: ${songsData.length}</h4>
-        <h4>Total Durasi: ${userPlaylistData.total_durasi}</h4>
+        <h4>Total Durasi: ${Math.floor(userPlaylistData.total_durasi/60)} jam ${userPlaylistData.total_durasi%60} menit</h4>
         <h4>Tanggal Dibuat: ${userPlaylistData.tanggal_dibuat}</h4>
         <h4>Deskripsi: ${userPlaylistData.deskripsi}</h4>`
 
@@ -87,7 +87,7 @@
             songListHTML += `  <tr>
                                     <th  scope="row">${song.judul}</th>
                                     <td>${song.nama_artis}</td>
-                                    <td>${song.durasi} menit</td>
+                                    <td>${Math.floor(song.durasi/60)} jam ${song.durasi%60} menit</td>
                                     <td>
                                         <button>Lihat</button>
                                         <button><a href="/playlist/play-song-page/${song.id_konten}">Play</a></button>

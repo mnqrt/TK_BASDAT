@@ -120,7 +120,7 @@
                     playlistTableHTML += `  <tr>
                                                     <th  scope="row">${playlist.judul}</th>
                                                     <td>${playlist.jumlah_lagu}</td>
-                                                    <td>${playlist.total_durasi} menit</td>
+                                                    <td>${Math.floor(playlist.total_durasi/60)} jam ${playlist.total_durasi%60} menit</td>
                                                     <td>
                                                         <a href="/playlist/show-one-by-id/${playlist.id_user_playlist}" class="button-link"><button>Detail</button></a>
                                                         <button onclick='showUpdatePlaylistForm(${JSON.stringify(playlist)})'>Ubah</button>
