@@ -36,22 +36,17 @@
 </head>
 <body>
   <h2>Create Podcast</h2>
-  <form method="post">
+  <form id="create-podcast-form" method="post">
     {% csrf_token %}
-    <label for="email_podcaster">Email Podcaster:</label>
-    <input type="email" id="email_podcaster" name="email_podcaster" required>
+    <label for="podcast-title">Judul:</label>
+    <input type="text" id="podcast-title" name="podcast-title" required>
 
-    <label for="judul">Judul:</label>
-    <input type="text" id="judul" name="judul" required>
-
-    <label for="tanggal_rilis">Tanggal Rilis:</label>
-    <input type="date" id="tanggal_rilis" name="tanggal_rilis" required>
-
-    <label for="tahun">Tahun:</label>
-    <input type="number" id="tahun" name="tahun" required>
-
-    <label for="durasi">Durasi (menit):</label>
-    <input type="number" id="durasi" name="durasi" required>
+    <label for="podcast-genre">Genre:</label>
+    <select id="podcast-genre" name="podcast-genre" multiple>
+      {% for genre in genres %}
+      <option value="{{ genre.id }}">{{ genre.name }}</option>
+      {% endfor %}
+    </select>
 
     <input type="submit" value="Submit">
   </form>
