@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('podcast.urls')),
     path('', include('chart.urls')),
-    # path('kelola_podcast/', include('kelola_podcast.urls')),
+    path('', include('kelola_podcast.urls')),
 ]

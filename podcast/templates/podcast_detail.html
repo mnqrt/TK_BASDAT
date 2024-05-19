@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block meta %}
 <title>Podcast Detail</title>
@@ -53,45 +54,81 @@
         font-weight: bold;
     }
 </style>
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
 {% endblock meta %}
 
 {% block content %}
 <div class="podcast-container">
     <div class="podcast-title">PODCAST DETAIL</div>
-    <div class="podcast-info"><strong>Judul:</strong> {{ podcast.title }}</div>
+    <div class="podcast-info"><strong>Judul:</strong> {{ podcast_detail.judul }}</div>
     <div class="podcast-info"><strong>Genre(s):</strong>
         <ul>
-            {% for genre in podcast.genre.all %}
-            <li>- {{ genre.name }}</li>
+            {% for genre in podcast_detail.genre %}
+            <li>{{ genre }}</li>
+            {% if not forloop.last %}, {% endif %}
             {% endfor %}
         </ul>
     </div>
-    <div class="podcast-info"><strong>Podcaster:</strong> {{ podcast.podcaster }}</div>
-    <div class="podcast-info"><strong>Total Durasi:</strong> {{ podcast.total_duration|floatformat:0 }} menit</div>
-    <div class="podcast-info"><strong>Tanggal Rilis:</strong> {{ podcast.release_date|date:"d/m/Y" }}</div>
-    <div class="podcast-info"><strong>Tahun:</strong> {{ podcast.year }}</div>
-    <a href="{% url 'previous_page_url' %}" class="back-button">Kembali</a>
+    <div class="podcast-info"><strong>Podcaster:</strong> {{ podcast_detail.podcaster }}</div>
+    <div class="podcast-info"><strong>Total Durasi:</strong> 
+        {% if podcast_detail.total_durasi_hours %}
+            {{ podcast_detail.total_durasi_hours }} jam 
+        {% endif %}
+        {{ podcast_detail.total_durasi_minutes }} menit
+    </div>
+    <div class="podcast-info"><strong>Tanggal Rilis:</strong> {{ podcast_detail.tanggal_rilis }}</div>
+    <div class="podcast-info"><strong>Tahun:</strong> {{ podcast_detail.tahun }}</div>
+    <button class="btn btn-primary back-button" onclick="goBack()">Kembali</button>
 </div>
 
 <h3>DAFTAR EPISODE</h3>
-<table class="episode-table">
+<table id="episodeTable" class="episode-table">
     <thead>
         <tr>
             <th>Judul Episode</th>
             <th>Deskripsi</th>
             <th>Durasi</th>
-            <th>Tanggal</th>
+            <th>Tanggal Rilis</th>
         </tr>
     </thead>
     <tbody>
         {% for episode in episodes %}
         <tr>
-            <td class="episode-title">{{ episode.title }}</td>
-            <td>{{ episode.description }}</td>
-            <td>{{ episode.duration|floatformat:0 }} menit</td>
-            <td>{{ episode.release_date|date:"d/m/Y" }}</td>
+            <td class="episode-title">{{ episode.judul }}</td>
+            <td>{{ episode.deskripsi }}</td>
+            <td>
+                {% if episode.durasi_hours %}
+                    {{ episode.durasi_hours }} jam 
+                {% endif %}
+                {{ episode.durasi_minutes }} menit
+            </td>
+            <td>{{ episode.tanggal_rilis }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+<br>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable
+        $('#episodeTable').DataTable({
+            "searching": false,
+            "lengthChange": false,
+            "paging": false,
+            "info": false,
+            "order": [[3, 'asc']]
+        });
+    });
+
+    function goBack() {
+        window.history.back();
+    }
+</script>
 {% endblock content %}

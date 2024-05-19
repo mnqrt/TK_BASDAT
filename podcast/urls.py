@@ -1,9 +1,8 @@
 from django.urls import path
+from podcast.views import play_podcast
 
-from podcast.views import podcast_detail
-
-app_name = 'podcast'
+app_name = 'play_podcast'
 
 urlpatterns = [
-    path('podcast/<uuid:podcast_id>/', podcast_detail, name='podcast_detail'),
+    path('podcast/<uuid:id_podcast>/', play_podcast, name='play_podcast')
 ]
