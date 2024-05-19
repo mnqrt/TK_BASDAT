@@ -67,8 +67,6 @@ def process(request):
                                             {int(price)}
                                         );"""
             
-            query_insert_premium =  f"INSERT INTO PREMIUM (email) VALUES ('{email}');"
-            query(query_insert_premium)
             query(query_insert_transaction)
             request.session["is_premium"] = True
             return HttpResponse("Payment Success", status=200)
