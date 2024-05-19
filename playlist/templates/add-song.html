@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Playlist Management System</title>
+</head>
+<body>
+    {% include 'main/navbar.html' with context=context only  %}
+    <div class="margin-top: 40px;">
+        <h1>Tambahkan lagu</h1>
+        <label for="songs">Tambahkan lagu:</label>
+
+        <select name="songs" id="song-dropdown"></select>
+
+        <button onclick="addSong()" id="button-add">Add Song</button>
+        <div id="fail"></div>
+    </div>
+
+    <script>
+        function UUID(s){return s}
+        var songArtistData = {{ song_artist|safe }}
+        var idUserPlayListData = `${{ id_user_playlist|safe }}`.slice(1)
+        console.log(songArtistData)
+        console.log(idUserPlayListData)
+
+        var songArtistDropdown = document.getElementById("song-dropdown")
+        var songArtistHTML = ''
+        for (const songArtist of songArtistData) {
+            songArtistHTML += `<option value="${songArtist.id_lagu}">${songArtist.judul_lagu} - ${songArtist.nama_artis}</option>`
+        }
+        songArtistDropdown.innerHTML = songArtistHTML
+        var addSongButton = document.getElementById("button-add")
+        addSongButton.innerHTML = `Add Song`
+
+        async function addSong() {
+            const songDropDown = document.getElementById("song-dropdown")
+            console.log(songDropDown.value)
+            const res = await fetch(`/playlist/add-song/${idUserPlayListData}/${songDropDown.value}`)
+            if (! res.ok) {
+                document.getElementById("fail").innerHTML = "Lagu sudah ada!"
+                return
+            }
+            window.location.href=`/playlist/show-one-by-id/${idUserPlayListData}`
+        }
+    </script>
+</body>
+</html>

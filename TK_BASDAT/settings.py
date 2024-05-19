@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-&bc@54%e!%c5=!g5s=cp-m*4^@f0ka-manj6nff)z0el*pbyvl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< HEAD
     'podcast',
     'chart',
     # 'kelola_podcast',
@@ -44,6 +45,14 @@ INSTALLED_APPS = [
     # 'subscription',
     # 'download',
     # 'main'
+=======
+    'playlist',
+    'subscription',
+    'download',
+    'main',
+    'cek_royalti',
+    'kelola_album'
+>>>>>>> d30811e85d318aafbf1b5ecf992cd9124d201be5
 ]
 
 MIDDLEWARE = [
@@ -82,15 +91,14 @@ WSGI_APPLICATION = 'TK_BASDAT.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres.bifgoiocecmaulszyldt',
-        'PASSWORD': 'ZtQSa7t2(7Va.@e',
-        'HOST': 'aws-0-ap-southeast-1.pooler.supabase.com',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',  # Database name
+        'USER': 'postgres.bifgoiocecmaulszyldt',  # Database username
+        'PASSWORD': 'ZtQSa7t2(7Va.@e',  # Database password
+        'HOST': 'aws-0-ap-southeast-1.pooler.supabase.com',  # Database host
+        'PORT': '5432',  # Database port
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators

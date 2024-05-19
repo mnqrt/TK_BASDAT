@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Royalti</title>
+    <style>
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <caption>LIST ROYALTI</caption>
+        <thead>
+            <tr>
+                <th>Judul Lagu</th>
+                <th>Judul Album</th>
+                <th>Total Play</th>
+                <th>Total Download</th>
+                <th>Total Royalti Didapat</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if role == "label" %}
+                {% if records_royalti_label %}
+                  {% for record in records_royalti_label %}
+                  <tr>
+                      <td>{{ record.judul_lagu }}</td>
+                      <td>{{ record.judul_album }}</td>
+                      <td>{{ record.total_play }}</td>
+                      <td>{{ record.total_download }}</td>
+                      <td>{{ record.jumlah }}</td>
+                  </tr>
+                  {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5">Belum Memiliki Royalti</td>
+                    </tr>
+                {% endif %}
+            {% endif %}
+
+            {% if role == "pengguna" %}
+              {% if isArtist == "True" %}
+                    {% if records_royalti_artist %}
+                        {% for record in records_royalti_artist %}
+                        <tr>
+                          <td>{{ record.judul_lagu }}</td>
+                          <td>{{ record.judul_album }}</td>
+                          <td>{{ record.total_play }}</td>
+                          <td>{{ record.total_download }}</td>
+                          <td>{{ record.jumlah }}</td>
+                      </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">Belum Memiliki Royalti</td>
+                        </tr>
+                    {% endif %}
+                {% endif %}
+
+                {% if isSongwriter == "True" %}
+                    {% if records_royalti_songwriter %}
+                        {% for record in records_royalti_songwriter %}
+                        <tr>
+                          <td>{{ record.judul_lagu }}</td>
+                          <td>{{ record.judul_album }}</td>
+                          <td>{{ record.total_play }}</td>
+                          <td>{{ record.total_download }}</td>
+                          <td>{{ record.jumlah }}</td>
+                      </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">Belum Memiliki Royalti</td>
+                        </tr>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </tbody>
+    </table>
+</body>
+</html>
