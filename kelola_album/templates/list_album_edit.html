@@ -44,7 +44,8 @@
 </head>
 
 <body>
-    <div class="container">
+    {% include 'main/navbar.html' with context=context only  %}
+    <div class="content">
         <a href="{% url 'kelola_album:create_album' %}">
             <button class="create-album-btn">+ Create Album</button>
         </a>

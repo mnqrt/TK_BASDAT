@@ -67,7 +67,8 @@
 </style>
 </head>
 <body>
-<div class="container">
+{% include 'main/navbar.html' with context=context only  %}
+<div class="content">
     <div class="form-container">
         <h2>Create Lagu</h2>
         <form class="form" method="POST" onsubmit="return validateForm()">

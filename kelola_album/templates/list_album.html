@@ -48,7 +48,8 @@
 </head>
 
 <body>
-    <div>
+    {% include 'main/navbar.html' with context=context only  %}
+    <div class="content">
         <h2>List Album</h2>
         {% if records_album %}
         <table>
