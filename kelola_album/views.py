@@ -205,13 +205,13 @@ def insert_konten(id_song, judul, date_now, year_now, durasi):
     query(f'insert into konten values (\'{id_song}\', \'{judul}\', \'{date_now}\', \'{year_now}\', \'{durasi}\')')
 
 def insert_song(id_song, id_artist, album_id):
-    res = query(f'insert into song values (\'{id_song}\', \'{id_artist[0]['id']}\', \'{album_id}\', 0, 0)')
+    res = query(f"insert into song values (\'{id_song}\', \'{id_artist[0]['id']}\', \'{album_id}\', 0, 0)")
     
 
 def insert_songwriter_write_song(id_song, songwriters):
     for songwriter in songwriters:
         idsongwriter = query(f'select id from songwriter where id = \'{songwriter}\'')
-        query(f'insert into royalti values (\'{idsongwriter[0]['id']}\', \'{id_song}\', 0)')
+        query(f"insert into royalti values (\'{idsongwriter[0]['id']}\', \'{id_song}\', 0)")
         query(f'insert into songwriter_write_song values (\'{songwriter}\', \'{id_song}\')')
 
 def insert_genres(id_song, genres):
@@ -269,8 +269,8 @@ def get_album_title(album_id):
 def get_artist_name(isArtist, idArtist):
     nama_artist = ""
     if isArtist == "True":
-        email_artist = query(f'select email_akun from artis where id = \'{idArtist[0]['id']}\'')
-        nama_artist = query(f'select nama from akun where email = \'{email_artist[0]['email_akun']}\'')
+        email_artist = query(f"select email_akun from artis where id = \'{idArtist[0]['id']}\'")
+        nama_artist = query(f"select nama from akun where email = \'{email_artist[0]['email_akun']}\'")
     return nama_artist
 
 def get_songwriter_name(isSongwriter, idSongwriter):
@@ -298,21 +298,21 @@ def get_albums_by_label(id_label):
 #     response.session['id_pemilik_cipta_label'] = str(label['id_pemilik_cipta_label'])
 
 def get_album_ids_by_artist(id_artist):
-    list_album_id_artist = query(f'SELECT DISTINCT id_album FROM SONG WHERE id_artist = \'{id_artist[0]['id']}\'')
+    list_album_id_artist = query(f"SELECT DISTINCT id_album FROM SONG WHERE id_artist = \'{id_artist[0]['id']}\'")
     return list_album_id_artist
 
 
 def get_album_records_by_ids(list_album_ids):
     records_album = []
     for id_album in list_album_ids:
-        album_record = query(f'SELECT id, judul, id_label, jumlah_lagu, total_durasi from album where id = \'{id_album['id_album']}\'')
-        res = query(f'SELECT nama FROM LABEL WHERE id = \'{album_record[0]['id_label']}\'')
+        album_record = query(f"SELECT id, judul, id_label, jumlah_lagu, total_durasi from album where id = \'{id_album['id_album']}\'")
+        res = query(f"SELECT nama FROM LABEL WHERE id = \'{album_record[0]['id_label']}\'")
         album_record = album_record + res
         records_album.append(album_record)
     return records_album
 
 def get_album_ids_by_songwriter(id_songwriter):
-    list_song_id_songwriter = query(f'SELECT id_song FROM songwriter_write_song WHERE id_songwriter = \'{id_songwriter[0]['id']}\'')
+    list_song_id_songwriter = query(f"SELECT id_song FROM songwriter_write_song WHERE id_songwriter = \'{id_songwriter[0]['id']}\'")
     list_album_id_songwriter = []
     for song in list_song_id_songwriter:
         res = query(f'SELECT id_album FROM SONG WHERE id_konten = \'{song["id_song"]}\'')
@@ -327,7 +327,7 @@ def get_song_records_by_album(album_id):
         print(f"Error executing query: {records_song}")
         return []
     for i in range(len(records_song)):
-        res = query(f'SELECT judul, tanggal_rilis, tahun, durasi from konten where id = \'{records_song[i]['id_konten']}\'')
+        res = query(f"SELECT judul, tanggal_rilis, tahun, durasi from konten where id = \'{records_song[i]['id_konten']}\'")
         records_song[i] = [records_song[i]] + [res[0]]
 
     return records_song
