@@ -25,4 +25,7 @@ urlpatterns = [
     path('download/' , include('download.urls')),
     path('cek_royalti/', include('cek_royalti.urls')),
     path('kelola_album/', include('kelola_album.urls')),
+    path('', include('podcast.urls')),
+    path('', include('chart.urls')),
+    path('', include('kelola_podcast.urls')),
 ]

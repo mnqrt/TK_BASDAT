@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RUMELIHATCHART - Chart List</title>
+<title>RU MELIHATCHART - Chart List</title>
 <style>
   h2 {
     text-align: center;
@@ -43,15 +43,12 @@
         </tr>
       </thead>
       <tbody>
+        {% for chart in charts %}
         <tr>
-          <td>DailyTop20</td>
-          <td><button onclick="viewChartDetail('DailyTop20')">Lihat Daftar Lagu</button></td>
+          <td>{{ chart.type }}</td>
+          <td><button onclick="viewChartDetail('{{ chart.id }}')">Lihat Daftar Lagu</button></td>
         </tr>
-        <tr>
-          <td>WeeklyTop20</td>
-          <td><button onclick="viewChartDetail('WeeklyTop20')">Lihat Daftar Lagu</button></td>
-        </tr>
-        <!-- Add more chart types as needed -->
+        {% endfor %}
       </tbody>
     </table>
     <div id="chart-actions">
@@ -60,8 +57,8 @@
   </div>
 
   <script>
-    function viewChartDetail(chartType) {
-      window.location.href = `chart_detail.html?type=${chartType}`;
+    function viewChartDetail(chartId) {
+      window.location.href = `/charts/${chartId}/`;
     }
 
     function goBack() {

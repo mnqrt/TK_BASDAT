@@ -3,90 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRUDKELOLAPODCAST - Daftar Episode</title>
+<title>List Episodes</title>
 <style>
   h2 {
     text-align: center;
     font-weight: bold;
   }
-
   table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
   }
-
   th, td {
     border: 1px solid black;
     padding: 8px;
     text-align: left;
   }
-
   .action-buttons button {
-    background-color: #FF6347;
+    background-color: #4CAF50;
     color: white;
     padding: 5px 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin: 2px;
+  }
+  .back-button {
+    display: block;
+    width: 150px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin: 20px auto;
+    text-decoration: none;
+    border-radius: 5px;
   }
 </style>
 </head>
 <body>
-  <h2 id="episode-list-title"></h2>
-
-  <!-- EPISODE TABLE -->
-  <table id="episode-table">
+  <h2>List Episodes for Podcast</h2>
+  <table>
     <thead>
       <tr>
-        <th>Judul Episode</th>
+        <th>Judul</th>
         <th>Deskripsi</th>
         <th>Durasi</th>
-        <th>Tanggal</th>
+        <th>Tanggal Rilis</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
+      {% for episode in episodes %}
       <tr>
-        <td>SubJudul1</td>
-        <td>Lorem Ipsum...</td>
-        <td>59 menit</td>
-        <td>18/03/2024</td>
-        <td class="action-buttons">
-          <button onclick="deleteEpisode('SubJudul1')">Hapus</button>
-        </td>
+        <td>{{ episode.1 }}</td>
+        <td>{{ episode.2 }}</td>
+        <td>{{ episode.3 }} menit</td>
+        <td>{{ episode.4 }}</td>
+        <form method="post" action="{% url 'delete_podcast' podcast.0 %}">
+          {% csrf_token %}
+          <button type="submit">Hapus</button>
+        </form>
       </tr>
-      <tr>
-        <td>SubJudul2</td>
-        <td>Lorem Ipsum...</td>
-        <td>1 jam 2 menit</td>
-        <td>25/03/2024</td>
-        <td class="action-buttons">
-          <button onclick="deleteEpisode('SubJudul2')">Hapus</button>
-        </td>
-      </tr>
-      <!-- Add more episodes as needed -->
+      {% endfor %}
     </tbody>
   </table>
-
-  <script>
-    // Function to delete an episode
-    function deleteEpisode(episodeTitle) {
-      if (confirm(`Apakah Anda yakin ingin menghapus episode "${episodeTitle}"?`)) {
-        // Code to delete the episode
-        alert(`Episode "${episodeTitle}" berhasil dihapus.`);
-        // Assuming the episodeList array is updated, you can remove the row from the table
-        // const row = document.getElementById(episodeTitle);
-        // row.parentNode.removeChild(row);
-      }
-    }
-
-    // Get the podcast title from the URL query parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const podcastTitle = urlParams.get('title');
-    if (podcastTitle) {
-      document.getElementById('episode-list-title').textContent = `DAFTAR EPISODE PADA ${podcastTitle.toUpperCase()}`;
-    }
-  </script>
+  <a href="{% url 'list_podcast' %}" class="back-button">Back to Podcast List</a>
 </body>
 </html>
