@@ -41,7 +41,6 @@
             })
             .then(response => {
                 if (response.ok) {
-                    alert('b');
                     window.location.reload();
                 } else {
                     response.text().then(message => {
