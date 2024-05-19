@@ -50,13 +50,13 @@ def chart_detail(request, chart_id):
         'songs': query_song
     }
 
-    print(query_type)
-    print(query_song)
+    # print(query_type)
+    # print(query_song)
     return render(request, 'chart_detail.html', context)
 
 def get_chart_detail_data(request, chart_id):
     with connection.cursor() as cursor:
-        cursor.execute("""
+        query("""
             SELECT title, artist, release_date, total_plays 
             FROM song 
             WHERE chart_id = %s 

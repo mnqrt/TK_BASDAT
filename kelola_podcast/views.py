@@ -3,7 +3,7 @@ from django.db import connection
 
 def execute_query(query, params=None):
     with connection.cursor() as cursor:
-        cursor.execute(query, params)
+        query(query, params)
         return cursor.fetchall()
 
 def create_podcast(request):

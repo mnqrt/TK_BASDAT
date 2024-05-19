@@ -1,7 +1,4 @@
-{% extends 'base.html' %}
-{% load static %}
 
-{% block meta %}
 <title>Podcast Detail</title>
 <style>
     .podcast-container {
@@ -56,9 +53,7 @@
 </style>
 <!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
-{% endblock meta %}
 
-{% block content %}
 <div class="podcast-container">
     <div class="podcast-title">PODCAST DETAIL</div>
     <div class="podcast-info"><strong>Judul:</strong> {{ podcast_detail.judul }}</div>
@@ -131,4 +126,3 @@
         window.history.back();
     }
 </script>
-{% endblock content %}
