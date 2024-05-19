@@ -64,6 +64,7 @@
             const totalPlayData = `${{ total_play|safe }}`.slice(1);
             const totalDownloadData = `${{ total_download|safe }}`.slice(1);
             const albumData = `${{ album|safe }}`.slice(1);
+            const isPremiumData = `${{ is_premium|safe }}`.slice(1);
 
             async function playSong() {
                 let progress = document.getElementById('song-progress').value;
@@ -82,6 +83,8 @@
 
             const downloadSongButton = document.getElementById('down-song')
             downloadSongButton.innerHTML = `<a href="/playlist/down-song-page/${idSongData}">Unduh Lagu</a>`
+            console.log("::",isPremiumData)
+            if (isPremiumData == 0)downloadSongButton.innerHTML = `Tidak Bisa download`
 
             function downloadSong() {
                 console.log("Downloading song...");

@@ -20,7 +20,7 @@
         console.log(statusData)
         const statusUnduh = statusData === "success" ? `<h1>Berhasil mengunduh Lagu dengan judul ‘${titleData}’!</h1>` : `<h1>Lagu dengan judul ‘${titleData}’ sudah pernah diunduh!</h1>`
         downloadDescriptionDiv.innerHTML = `${statusUnduh}
-        <a href="/playlist">[KE DAFTAR DOWNLOAD]</a>
+        <a href="/download">[KE DAFTAR DOWNLOAD]</a>
         <a href="/playlist/play-song-page/${idSongData}">Kembali</a>`
         
     </script>

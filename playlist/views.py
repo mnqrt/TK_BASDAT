@@ -169,12 +169,17 @@ def play_song_page(request, id_song):
                     WHERE s.id_konten='{id_song}'"""
     album = query(query_str)[0]['album']
 
+    query_check_premium =  f"SELECT is_premium_user('{email}');"
+    active = query(query_check_premium)[0]
+
+    dia_aktif = 1 if active['is_premium_user'] else 0
+
     context = get_session_data(request)
 
     return render(request, 'play-song.html', {'judul':judul,'genre':genre,'nama_artis':nama_artis,'nama_songwriter':nama_songwriter,
                                             'durasi':durasi,'tanggal_rilis':tanggal_rilis,'tahun':tahun,
                                             'total_play':total_play,'total_download':total_download,'album':album,
-                                            'email':email, 'id_song':id_song, 'context':context})
+                                            'email':email, 'id_song':id_song, 'context':context, 'is_premium': dia_aktif})
 
 def play_song(request, id_song):
     email = request.session['email']
