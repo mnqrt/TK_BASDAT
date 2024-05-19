@@ -3,30 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRUDKELOLAPODCAST - Create Episode</title>
+<title>Create Episode</title>
 <style>
   h2 {
     text-align: center;
     font-weight: bold;
   }
-
   form {
     width: 50%;
     margin: 0 auto;
   }
-
   label {
     display: block;
     margin-bottom: 5px;
   }
-
-  input[type="text"] {
+  input[type="text"], input[type="date"], input[type="number"], textarea {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
     box-sizing: border-box;
   }
-
   input[type="submit"] {
     background-color: #4CAF50;
     color: white;
@@ -36,37 +32,25 @@
     cursor: pointer;
     margin-top: 10px;
   }
-
-  .podcast-info {
-    text-align: c;
-    margin-bottom: 20px;
-  }
 </style>
 </head>
 <body>
-  <h2>CREATE EPISODE</h2>
+  <h2>Create Episode</h2>
+  <form method="post">
+    {% csrf_token %}
+    <label for="judul">Judul:</label>
+    <input type="text" id="judul" name="judul" required>
 
-  <!-- CREATE EPISODE FORM -->
-  <form id="create-episode-form">
-    <p>Podcast: <span id="podcast-title"></span></p>
-    <input type="hidden" id="podcast-title-input" name="podcast-title" value="">
-    <label for="episode-title">Judul:</label>
-    <input type="text" id="episode-title" name="episode-title" required>
+    <label for="deskripsi">Deskripsi:</label>
+    <textarea id="deskripsi" name="deskripsi" required></textarea>
 
-    <label for="episode-description">Deskripsi:</label>
-    <input type="text" id="episode-description" name="episode-description" required>
+    <label for="durasi">Durasi (menit):</label>
+    <input type="number" id="durasi" name="durasi" required>
 
-    <label for="episode-duration">Durasi:</label>
-    <input type="text" id="episode-duration" name="episode-duration" required>
+    <label for="tanggal_rilis">Tanggal Rilis:</label>
+    <input type="date" id="tanggal_rilis" name="tanggal_rilis" required>
 
     <input type="submit" value="Submit">
   </form>
-
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const podcastTitle = urlParams.get('title');
-    document.getElementById("podcast-title").textContent = podcastTitle;
-    document.getElementById("podcast-title-input").value = podcastTitle;
-  </script>
 </body>
 </html>

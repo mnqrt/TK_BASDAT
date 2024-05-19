@@ -31,46 +31,34 @@
 <body>
   <div id="chart-detail">
     <h2>CHART DETAIL</h2>
-    <p>Tipe: <span id="chart-type"></span></p>
+    <p>Tipe: {{ chart_type }}</p>
     <button onclick="goBack()">Kembali</button>
     <h3>SONG LIST</h3>
     <table>
       <thead>
         <tr>
-          <th>Song Title</th>
-          <th>By</th>
-          <th>Release Date</th>
+          <th>Judul Lagu</th>
+          <th>Oleh</th>
+          <th>Tanggal Rilis</th>
           <th>Total Plays</th>
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody id="song-table-body">
+      <tbody>
+        {% for song in songs %}
         <tr>
-          <td>Song1</td>
-          <td>Artist1</td>
-          <td>09/03/2024</td>
-          <td>21000</td>
-          <td><button onclick="viewSongDetail('Song1')">Lihat</button></td>
+          <td>{{ song.title }}</td>
+          <td>{{ song.artist }}</td>
+          <td>{{ song.release_date }}</td>
+          <td>{{ song.total_plays }}</td>
+          <td><button onclick="viewSongDetail('{{ song.title }}')">Lihat</button></td>
         </tr>
-        <tr>
-          <td>Song2</td>
-          <td>Artist2</td>
-          <td>02/03/2024</td>
-          <td>19000</td>
-          <td><button onclick="viewSongDetail('Song2')">Lihat</button></td>
-        </tr>
-        <!-- Add more songs as needed -->
+        {% endfor %}
       </tbody>
     </table>
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const chartType = urlParams.get('type');
-      document.getElementById("chart-type").textContent = chartType;
-    });
-
     function viewSongDetail(songTitle) {
       alert(`View song detail for ${songTitle}`);
     }

@@ -3,29 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRUDKELOLAPODCAST - Create Podcast</title>
+<title>Create Podcast</title>
 <style>
   h2 {
     text-align: center;
     font-weight: bold;
   }
-
   form {
-    margin-bottom: 20px;
+    width: 50%;
+    margin: 0 auto;
   }
-
   label {
     display: block;
     margin-bottom: 5px;
   }
-
-  input[type="text"], select {
+  input[type="text"], input[type="email"], input[type="date"], input[type="number"] {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
     box-sizing: border-box;
   }
-
   input[type="submit"] {
     background-color: #4CAF50;
     color: white;
@@ -33,33 +30,25 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-right: 10px;
+    margin-top: 10px;
   }
 </style>
 </head>
 <body>
-  <h2>CREATE PODCAST</h2>
-
-  <!-- CREATE PODCAST FORM -->
-  <form id="create-podcast-form">
+  <h2>Create Podcast</h2>
+  <form id="create-podcast-form" method="post">
+    {% csrf_token %}
     <label for="podcast-title">Judul:</label>
-    <input type="text" id="podcast-title" name="podcast-title">
+    <input type="text" id="podcast-title" name="podcast-title" required>
 
     <label for="podcast-genre">Genre:</label>
     <select id="podcast-genre" name="podcast-genre" multiple>
-      <option value="genre1">Genre 1</option>
-      <option value="genre2">Genre 2</option>
-      <!-- Add more genres as needed -->
+      {% for genre in genres %}
+      <option value="{{ genre.id }}">{{ genre.name }}</option>
+      {% endfor %}
     </select>
-
-    <label for="podcast-duration">Durasi:</label>
-    <input type="text" id="podcast-duration" name="podcast-duration">
 
     <input type="submit" value="Submit">
   </form>
-
-  <script>
-    // JavaScript code for creating a podcast (not included in this example)
-  </script>
 </body>
 </html>

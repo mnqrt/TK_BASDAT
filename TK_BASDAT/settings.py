@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'main',
     'cek_royalti',
     'kelola_album'
+    'podcast',
+    'chart',
+    'kelola_podcast',
 ]
 
 MIDDLEWARE = [
