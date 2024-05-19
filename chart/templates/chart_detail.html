@@ -29,7 +29,9 @@
 </style>
 </head>
 <body>
-  <div id="chart-detail">
+  {% include 'main/navbar.html' with context=context only  %}
+  <div id="chart-detail" class="content">
+    
     <h2>CHART DETAIL</h2>
     <p>Tipe: {{ chart_type }}</p>
     <button onclick="goBack()">Kembali</button>

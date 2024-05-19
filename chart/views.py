@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.db import connection
 from utils.query import query
+from utils.session_data import *
 def chart_list(request):
 
     q = query("SELECT id_playlist, tipe FROM CHART")
@@ -12,8 +13,10 @@ def chart_list(request):
     # context = {
     #     'charts': [{'id': chart[0], 'type': chart[1]} for chart in charts]
     # }
+    contextt = get_session_data(request)
     context = {
-        'charts': q
+        'charts': q,
+        'context': contextt 
     }
     print(q)
     return render(request, 'chart_list.html',context)
@@ -45,9 +48,11 @@ def chart_detail(request, chart_id):
                         ORDER BY S.total_play DESC 
                         LIMIT 20
                         """)
+    contextt = get_session_data(request)
     context = {
         'chart_type':query_type.pop()['tipe'],
-        'songs': query_song
+        'songs': query_song,
+        'context': contextt
     }
 
     # print(query_type)
